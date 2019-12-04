@@ -1,10 +1,10 @@
 ﻿//***************************************************************************
-// JD-101175013-Assignment5.cpp by Jang Doosung (C) 2018 All Rights Reserved.
+// Project.cpp by Jang Doosung, Junhyuk Kang, Junho Kim (C) 2018 All Rights Reserved.
 //
-// Assignment 5 submission.
+// Project submission.
 //
 // Description:
-//	Texture, Blending and Lighting
+//	Building Castle with primitives, texture, and light.
 //  
 //*****************************************************************************
 
@@ -17,6 +17,7 @@ using namespace std;
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 #include "SoilLib/SOIL.h"
+#include "Mesh.h"
 
 #define X_AXIS glm::vec3(1,0,0)
 #define Y_AXIS glm::vec3(0,1,0)

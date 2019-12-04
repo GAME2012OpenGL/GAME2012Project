@@ -85,15 +85,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="JD-101175013-Assignment5.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Project.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="triangles.frag" />
     <None Include="triangles.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\oglpg-8th-edition\include\LoadShaders.h" />
+    <ClInclude Include="..\include\LoadShaders.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Debug\LoadShaders.obj" />
