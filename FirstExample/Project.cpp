@@ -544,6 +544,7 @@ void clean()
 //
 int main(int argc, char** argv)
 {
+	int doosung = 10;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	glutInitWindowSize(WindowWidth, WindowHeight);
