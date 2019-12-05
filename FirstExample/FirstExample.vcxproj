@@ -89,6 +89,7 @@
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Project.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +101,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Object.h" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Debug\LoadShaders.obj" />

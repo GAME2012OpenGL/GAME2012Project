@@ -17,7 +17,11 @@ using namespace std;
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 #include "SoilLib/SOIL.h"
+#include <vector>
+#include "Object.h"
+#include "GeometryGenerator.h"
 #include "Mesh.h"
+#include "Cube.h"
 
 #define X_AXIS glm::vec3(1,0,0)
 #define Y_AXIS glm::vec3(0,1,0)
@@ -33,23 +37,14 @@ GLuint uniformLightPos = 0;
 GLuint uniformLightPos2 = 0;
 GLuint uniformEyePos = 0;
 
-GLuint vao = 0, ibo = 0, points_vbo = 0;
-GLuint iNumOfCubeIndices = 0;
-GLuint iNumOfVertices = 0;
-
-GLuint pyramid_vao = 0, pyramid_ibo = 0, pyramid_points_vbo = 0;
-GLuint iNumOfPyramidIndices = 0;
-GLuint iNumOfPyramidVertices = 0;
-
-GLuint iVertexLength = 0;
 GLuint iLeather_tex = 0;
 GLuint iFence_tex = 0;
 GLuint iWindow_tex = 0;
 
-float rotAngle = 0.0f;
+//float rotAngle = 0.0f;
 
 // Horizontal and vertical ortho offsets.
-float osH = 0.0f, osV = 0.0f, scrollSpd = 0.25f;
+//float osH = 0.0f, osV = 0.0f, scrollSpd = 0.25f;
 
 int deltaTime, currentTime, lastTime = 0;
 glm::mat4 view, projection;
@@ -60,72 +55,10 @@ int WindowHeight = 600;
 glm::vec3 CameraPosition = glm::vec3(0.f, 0.f, 10);
 float fCameraSpeed = 0.5f;
 
-GLfloat cube_vertices[] =
-{
-	//Front 
-	//x, y, z				u, v		nx, ny, nz
-	-1.0f, -1.0f, 1.0f,		0, 1,		0, 0, 0,	// 0.
-	1.0f, -1.0f, 1.0f,		1, 1,		0, 0, 0,	// 1
-	1.0f, 1.0f, 1.0f,		1, 0,		0, 0, 0,	// 2.
-	-1.0f, 1.0f, 1.0f,		0, 0,		0, 0, 0,	// 3.
 
-	//Right
-	1.0f, -1.0f, 1.0f,		0, 1,		0, 0, 0,	// 4
-	1.0f, -1.0f, -1.0f,		1, 1,		0, 0, 0,	// 5
-	1.0f, 1.0f, -1.0f,		1, 0,		0, 0, 0,	// 6
-	1.0f, 1.0f, 1.0f,		0, 0,		0, 0, 0,	// 7.
+vector<Object*> vecObjects;
 
-	//Left
-	-1.0f, -1.0f, -1.0f,	0, 1,		0, 0, 0,	// 8
-	-1.0f, -1.0f, 1.0f,		1, 1,		0, 0, 0,	// 9
-	-1.0f, 1.0f, 1.0f,		1, 0,		0, 0, 0,	// 10
-	-1.0f, 1.0f, -1.0f,		0, 0,		0, 0, 0,	// 11
 
-	//Back
-	1.0f, -1.0f, -1.0f,		0, 1,		0, 0, 0,	// 12
-	-1.0f, -1.0f, -1.0f,	1, 1,		0, 0, 0,	// 13
-	-1.0f, 1.0f, -1.0f,		1, 0,		0, 0, 0,	// 14
-	1.0f, 1.0f, -1.0f,		0, 0,		0, 0, 0,	// 15
-
-	//Up
-	-1.0f, 1.0f, 1.0f,		0, 1,		0, 0, 0,	//16
-	1.0f, 1.0f, 1.0f,		1, 1,		0, 0, 0,
-	1.0f, 1.0f, -1.0f,		1, 0,		0, 0, 0,
-	-1.0f, 1.0f, -1.0f,		0, 0,		0, 0, 0,
-
-	//Down
-	-1.0f, -1.0f, -1.0f,	0, 1,		0, 0, 0,	//20
-	1.0f, -1.0f, -1.0f,		1, 1,		0, 0, 0,
-	1.0f, -1.0f, 1.0f,		1, 0,		0, 0, 0,
-	-1.0f, -1.0f, 1.0f,		0, 0,		0, 0, 0
-};
-
-GLshort cube_indices[] =
-{
-	//Front
-	0, 1, 3,
-	1, 2, 3,
-
-	//Right
-	4, 5, 7,
-	5, 6, 7,
-
-	//Left
-	8, 9, 11,
-	9, 10, 11,
-
-	//Back
-	12, 13, 15,
-	13, 14, 15,
-
-	//Up
-	16, 17, 19,
-	17, 18, 19,
-
-	//DOwn
-	20, 21, 23,
-	21, 22, 23
-};
 
 GLfloat pyramid_vertices[] =
 {
@@ -226,55 +159,7 @@ PointLight pLight2(glm::vec3(-2.f, -2.f, 2.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f, 32.f);
 
 
-void calcAverageNormals(GLshort* indices, unsigned int indiceCount,
-	GLfloat* vertices, unsigned int verticeCount, unsigned int vLength, unsigned int normalOffset)
-{
-	for (int i = 0; i < indiceCount; i += 3)
-	{
-		//Get the location of vertex in vertex array(vertices) using index calculation
-		unsigned int in0 = indices[i] * vLength;		//First vertex's index of vertex array
-		unsigned int in1 = indices[i + 1] * vLength;	//Second vertex's index of vertex array
-		unsigned int in2 = indices[i + 2] * vLength;	//Third vertex's index of vertex array
 
-		//Get the line vector between two vectexs
-		//Calculate vector from First vertex to Second vertex
-		glm::vec3 v1(vertices[in1] - vertices[in0], 
-					 vertices[in1 + 1] - vertices[in0 + 1], 
-					 vertices[in1 + 2] - vertices[in0 + 2]);
-		//Calculate vector from First vertex to Third vertex
-		glm::vec3 v2(vertices[in2] - vertices[in0], 
-					 vertices[in2 + 1] - vertices[in0 + 1], 
-					 vertices[in2 + 2] - vertices[in0 + 2]);
-
-		//Calculate perpendicular vector of two vectors(v1, v2) which is face normal
-		glm::vec3 normal = glm::cross(v1, v2);
-		normal = glm::normalize(normal);
-
-		//Find the index of normal in vertex array
-		in0 += normalOffset;
-		in1 += normalOffset;
-		in2 += normalOffset;
-	
-		//Add calculated normal to each vertex's normal
-		vertices[in0] += normal.x; vertices[in0 + 1] += normal.y; vertices[in0 + 2] += normal.z;
-		vertices[in1] += normal.x; vertices[in1 + 1] += normal.y; vertices[in1 + 2] += normal.z;
-		vertices[in2] += normal.x; vertices[in2 + 1] += normal.y; vertices[in2 + 2] += normal.z;
-	}
-
-	//Normalize each vertex's normal
-	for (int i = 0; i < verticeCount; ++i)
-	{
-		//Find index of normal in vertex array
-		unsigned int nOffset = i * vLength + normalOffset;
-
-		//Normalize the vertex's normal
-		glm::vec3 vec(vertices[nOffset], vertices[nOffset + 1], vertices[nOffset + 2]);
-		vec = glm::normalize(vec);
-
-		//Set normalized normal
-		vertices[nOffset] = vec.x; vertices[nOffset + 1] = vec.y; vertices[nOffset + 2] = vec.z;
-	}
-}
 
 
 void init(void)
@@ -344,64 +229,46 @@ void init(void)
 	uniformEyePos = glGetUniformLocation(program, "eyePos");
 
 
+	//Create All meshes
+	GeometryGenerator::GenerateMeshes();
 
-	iVertexLength = 8;
+	//Create Objects
+	Object* pObject1 = new Object(uniformModel);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	vecObjects.push_back(pObject1);
 
-	//////////////////////////////////Create Cube////////////////////////////////////////////////
-	iNumOfCubeIndices = sizeof(cube_indices) / sizeof(GLshort);
-	iNumOfVertices = sizeof(cube_vertices) / (sizeof(GLfloat) * iVertexLength);
-	calcAverageNormals(cube_indices, iNumOfCubeIndices, cube_vertices, iNumOfVertices, iVertexLength, 5);
-
-
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-		glGenBuffers(1, &ibo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_indices), cube_indices, GL_STATIC_DRAW);
-
-		glGenBuffers(1, &points_vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(cube_vertices[0]) * iVertexLength, 0);
-		glEnableVertexAttribArray(0);
-
-		//tell location1 is for tex coordinate
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(cube_vertices[0]) * iVertexLength, (void*)(sizeof(cube_vertices[0]) * 3));
-		glEnableVertexAttribArray(1);
-
-		//tell location2 is for normal
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(cube_vertices[0]) * iVertexLength, (void*)(sizeof(cube_vertices[0]) * 5));
-		glEnableVertexAttribArray(2);
-	////////////////////////////////////////////////////////////////////////////////////////////////
+	pObject1 = new Object(uniformModel);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetPosition(4, 0.f, 0.f);
+	vecObjects.push_back(pObject1);
 
 
 	//////////////////////////////////Create Pyramid////////////////////////////////////////////////
-	iNumOfPyramidIndices = sizeof(pyramid_indices) / sizeof(GLshort);
-	iNumOfPyramidVertices = sizeof(pyramid_vertices) / (sizeof(GLfloat) * iVertexLength);
-	calcAverageNormals(pyramid_indices, iNumOfPyramidIndices, pyramid_vertices, iNumOfPyramidVertices, iVertexLength, 5);
+	//iNumOfPyramidIndices = sizeof(pyramid_indices) / sizeof(GLshort);
+	//iNumOfPyramidVertices = sizeof(pyramid_vertices) / (sizeof(GLfloat) * iVertexLength);
+	//calcAverageNormals(pyramid_indices, iNumOfPyramidIndices, pyramid_vertices, iNumOfPyramidVertices, iVertexLength, 5);
 
 
-	glGenVertexArrays(1, &pyramid_vao);
-	glBindVertexArray(pyramid_vao);
+	//glGenVertexArrays(1, &pyramid_vao);
+	//glBindVertexArray(pyramid_vao);
 
-		glGenBuffers(1, &pyramid_ibo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramid_ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pyramid_indices), pyramid_indices, GL_STATIC_DRAW);
+	//	glGenBuffers(1, &pyramid_ibo);
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramid_ibo);
+	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pyramid_indices), pyramid_indices, GL_STATIC_DRAW);
 
-		glGenBuffers(1, &pyramid_points_vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, pyramid_points_vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(pyramid_vertices), pyramid_vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, 0);
-		glEnableVertexAttribArray(0);
+	//	glGenBuffers(1, &pyramid_points_vbo);
+	//	glBindBuffer(GL_ARRAY_BUFFER, pyramid_points_vbo);
+	//	glBufferData(GL_ARRAY_BUFFER, sizeof(pyramid_vertices), pyramid_vertices, GL_STATIC_DRAW);
+	//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, 0);
+	//	glEnableVertexAttribArray(0);
 
-		//tell location1 is for tex coordinate
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, (void*)(sizeof(pyramid_vertices[0]) * 3));
-		glEnableVertexAttribArray(1);
+	//	//tell location1 is for tex coordinate
+	//	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, (void*)(sizeof(pyramid_vertices[0]) * 3));
+	//	glEnableVertexAttribArray(1);
 
-		//tell location2 is for normal
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, (void*)(sizeof(pyramid_vertices[0]) * 5));
-		glEnableVertexAttribArray(2);
+	//	//tell location2 is for normal
+	//	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, (void*)(sizeof(pyramid_vertices[0]) * 5));
+	//	glEnableVertexAttribArray(2);
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -483,22 +350,6 @@ void init(void)
 
 //---------------------------------------------------------------------
 //
-// transformModel
-//
-
-void transformObject(glm::vec3 scale, glm::vec3 rotationAxis, float rotationAngle, glm::vec3 translation) 
-{
-	glm::mat4 Model;
-	Model = glm::mat4(1.0f);
-	Model = glm::translate(Model, translation);
-	Model = glm::rotate(Model, glm::radians(rotationAngle), rotationAxis);
-	Model = glm::scale(Model, scale);
-	
-	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, &Model[0][0]);
-}
-
-//---------------------------------------------------------------------
-//
 // display
 //
 
@@ -516,6 +367,9 @@ void display(void)
 		glm::vec3(0, 0, 0),		// and looks at the origin
 		glm::vec3(0, 1, 0)		// Head is up (set to 0,-1,0 to look upside-down)
 	);
+
+	for (int i = 0; i < vecObjects.size(); ++i)
+		vecObjects[i]->Update();
 	
 	//Set projection and view matrix in shader
 	glUniformMatrix4fv(uniformProj, 1, GL_FALSE, &projection[0][0]);
@@ -540,17 +394,15 @@ void display(void)
 
 	//Draw Plane
 	glBindTexture(GL_TEXTURE_2D, iLeather_tex);
-	glBindVertexArray(vao);
 	static float fAngle = 0.f;
-	fAngle += 1.f;
-	if (fAngle >= 360.f)
-		fAngle -= 360.f;
-	transformObject(glm::vec3(1.f, 1.f, 1.f), Y_AXIS, fAngle, glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, iNumOfCubeIndices, GL_UNSIGNED_SHORT, 0);
-
+	//fAngle += 1.f;
+	//if (fAngle >= 360.f)
+	//	fAngle -= 360.f;
+	for(int i =0 ; i < vecObjects.size(); ++i)
+		vecObjects[i]->Render();	
 	
 
-	glEnable(GL_BLEND);
+	/*glEnable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	glBindTexture(GL_TEXTURE_2D, iFence_tex);
 	glBindVertexArray(vao);
@@ -569,7 +421,7 @@ void display(void)
 	glDrawElements(GL_TRIANGLES, iNumOfPyramidIndices, GL_UNSIGNED_SHORT, 0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
+	glDisable(GL_BLEND);*/
 
 
 
@@ -578,6 +430,7 @@ void display(void)
 
 void idle()
 {
+	
 	//glutPostRedisplay();
 }
 
@@ -673,6 +526,16 @@ void clean()
 	glDeleteTextures(1, &iLeather_tex);
 	glDeleteTextures(1, &iFence_tex);
 	glDeleteTextures(1, &iWindow_tex);
+
+	//Delete objects
+	for (int i = 0; i < vecObjects.size(); ++i)
+	{
+		vecObjects[i]->Clear();
+		delete vecObjects[i];
+	}
+
+	//Delete meshes
+	GeometryGenerator::DestroyMeshes();
 }
 
 //---------------------------------------------------------------------
