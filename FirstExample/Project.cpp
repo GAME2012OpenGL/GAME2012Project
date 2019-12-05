@@ -312,7 +312,7 @@ void init(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	SOIL_free_image_data(image);
 
-
+	int a = 0;
 
 	image = SOIL_load_image("Window.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	if (image == nullptr)

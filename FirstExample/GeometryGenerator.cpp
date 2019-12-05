@@ -10,6 +10,9 @@ void GeometryGenerator::GenerateMeshes()
 	Cube* pCube = new Cube;
 	pCube->CreateMesh();
 	m_vecMeshes.push_back(pCube);
+
+	//Create sphere
+
 }
 
 void GeometryGenerator::DestroyMeshes()
