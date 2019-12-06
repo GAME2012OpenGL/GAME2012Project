@@ -56,3 +56,14 @@ GLuint TextureManager::GetTexture(const char* textureKey)
 
 	return 0;
 }
+
+void TextureManager::DestroyTexture()
+{
+	std::map<const char*, GLuint>::iterator iterBegin = m_mapTextures.begin();
+	std::map<const char*, GLuint>::iterator iterEnd = m_mapTextures.end();
+
+	for (; iterBegin != iterEnd; ++iterBegin)
+	{
+		glDeleteTextures(1, &(iterBegin->second));
+	}
+}

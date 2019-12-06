@@ -41,10 +41,6 @@ GLuint uniformLightPos = 0;
 GLuint uniformLightPos2 = 0;
 GLuint uniformEyePos = 0;
 
-GLuint iLeather_tex = 0;
-GLuint iFence_tex = 0;
-GLuint iWindow_tex = 0;
-
 //float rotAngle = 0.0f;
 
 // Horizontal and vertical ortho offsets.
@@ -355,16 +351,16 @@ void mouseDown(int btn, int state, int x, int y)
 
 void clean()
 {
-	glDeleteTextures(1, &iLeather_tex);
-	glDeleteTextures(1, &iFence_tex);
-	glDeleteTextures(1, &iWindow_tex);
-
 	//Delete objects
 	for (int i = 0; i < vecObjects.size(); ++i)
 	{
 		vecObjects[i]->Clear();
 		delete vecObjects[i];
 	}
+
+
+	//Delete texture
+	TextureManager::DestroyTexture();
 
 	//Delete meshes
 	GeometryGenerator::DestroyMeshes();

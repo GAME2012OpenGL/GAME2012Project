@@ -14,6 +14,8 @@ public :
 
 	static void CreateTexture(const char* filePath, const char* textureKey, int force_channels);
 	static GLuint GetTexture(const char* textureKey);
+
+	static void DestroyTexture();
 };
 
 #endif
