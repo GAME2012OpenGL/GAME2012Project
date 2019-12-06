@@ -2,6 +2,7 @@
 
 #include "Cube.h"
 #include "Pyramid.h"
+#include "Pyramid_kindof.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
@@ -17,6 +18,10 @@ void GeometryGenerator::GenerateMeshes()
 	pPyramid->CreateMesh();
 	m_vecMeshes.push_back(pPyramid);
 
+	//Create kind of Pyramid
+	PyramidKindOf* pPyramid_kindof = new PyramidKindOf;
+	pPyramid_kindof->CreateMesh();
+	m_vecMeshes.push_back(pPyramid_kindof);
 }
 
 void GeometryGenerator::DestroyMeshes()
