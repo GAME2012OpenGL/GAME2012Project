@@ -9,7 +9,7 @@ class Mesh;
 class GeometryGenerator
 {
 public :
-	enum EMeshList{MESH_CUBE, MESH_END};
+	enum EMeshList{MESH_CUBE,MESH_PYRAMID, MESH_END};
 
 private :
 	static std::vector<Mesh*> m_vecMeshes;

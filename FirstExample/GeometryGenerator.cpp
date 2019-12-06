@@ -1,6 +1,7 @@
 #include "GeometryGenerator.h"
 
 #include "Cube.h"
+#include "Pyramid.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
@@ -11,7 +12,9 @@ void GeometryGenerator::GenerateMeshes()
 	pCube->CreateMesh();
 	m_vecMeshes.push_back(pCube);
 
-	//Create sphere
+	//Create Pyramid
+	Pyramid *pPyramid = new Pyramid;
+
 
 }
 
