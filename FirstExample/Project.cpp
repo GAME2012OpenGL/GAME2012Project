@@ -22,6 +22,7 @@ using namespace std;
 #include "GeometryGenerator.h"
 #include "Mesh.h"
 #include "Cube.h"
+#include "Pyramid.h"
 
 #define X_AXIS glm::vec3(1,0,0)
 #define Y_AXIS glm::vec3(0,1,0)
@@ -57,56 +58,6 @@ float fCameraSpeed = 0.5f;
 
 
 vector<Object*> vecObjects;
-
-
-
-GLfloat pyramid_vertices[] =
-{
-	//Front
-	0.f, 2.f, 0.f,		0.5, 0,		0, 0, 0,		//0
-	-1.f, 0.f, 1.f,		0, 1,		0, 0, 0,
-	1.f, 0.f, 1.f,		1, 1,		0, 0, 0,
-
-	//right
-	0.f, 2.f, 0.f,		0.5, 0,		0, 0, 0,		//3
-	1.f, 0.f, 1.f,		0, 1,		0, 0, 0,
-	1.f, 0.f, -1.f,		1, 1,		0, 0, 0,
-
-	//back
-	0.f, 2.f, 0.f,		0.5, 0,		0, 0, 0,		//6
-	1.f, 0.f, -1.f,		0, 1,		0, 0, 0,
-	-1.f, 0.f, -1.f,	1, 1,		0, 0, 0,
-
-	//left
-	0.f, 2.f, 0.f,		0.5, 0,		0, 0, 0,		//9
-	-1.f, 0.f, -1.f,	0, 1,		0, 0, 0,
-	-1.f, 0.f, 1.f,		1, 1,		0, 0, 0,
-
-	//bottom
-	-1.f, 0.f, 1.f,		0, 0,		0, 0, 0,		//12
-	-1.f, 0.f, -1.f,	0, 1,		0, 0, 0,
-	1.f, 0.f, -1.f,		1, 1,		0, 0, 0,
-	1.f, 0.f, 1.f,		1, 0,		0, 0, 0
-};
-
-GLshort pyramid_indices[] =
-{
-	//Front
-	0, 1, 2,
-
-	//RIght
-	3, 4, 5,
-
-	//Back
-	6, 7, 8,
-
-	//left
-	9, 10, 11,
-
-	//bottom
-	12, 13 ,14,
-	12, 14, 15
-};
 
 bool bWireFrameMode = false;
 
@@ -239,8 +190,13 @@ void init(void)
 
 	pObject1 = new Object(uniformModel);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
-	pObject1->SetPosition(4, 0.f, 0.f);
+	pObject1->SetPosition(4.f, 0.f, 0.f);
 	vecObjects.push_back(pObject1);
+
+	Object* pObject2 = new Object(uniformModel);
+	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
+	pObject2->SetPosition(4.f, 1.f, 0.f);
+	vecObjects.push_back(pObject2);
 
 
 	//////////////////////////////////Create Pyramid////////////////////////////////////////////////

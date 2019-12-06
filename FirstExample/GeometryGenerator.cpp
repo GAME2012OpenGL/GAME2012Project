@@ -14,7 +14,8 @@ void GeometryGenerator::GenerateMeshes()
 
 	//Create Pyramid
 	Pyramid* pPyramid = new Pyramid;
-
+	pPyramid->CreateMesh();
+	m_vecMeshes.push_back(pPyramid);
 
 }
 
