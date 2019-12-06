@@ -92,6 +92,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="Pyramid_kindof.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="triangles.frag" />
@@ -104,6 +105,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="Pyramid_kindof.h" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Debug\LoadShaders.obj" />

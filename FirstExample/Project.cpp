@@ -198,6 +198,11 @@ void init(void)
 	pObject2->SetPosition(4.f, 1.f, 0.f);
 	vecObjects.push_back(pObject2);
 
+	Object* pObject3 = new Object(uniformModel);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject3->SetPosition(0.f, 2.f, 0.f);
+	vecObjects.push_back(pObject3);
+
 
 	//////////////////////////////////Create Pyramid////////////////////////////////////////////////
 	//iNumOfPyramidIndices = sizeof(pyramid_indices) / sizeof(GLshort);
