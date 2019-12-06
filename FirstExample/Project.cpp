@@ -20,6 +20,7 @@ using namespace std;
 #include "SoilLib/SOIL.h"
 #include <vector>
 #include "Camera.h"
+#include "TextureManager.h"
 #include "Object.h"
 #include "GeometryGenerator.h"
 #include "Mesh.h"
@@ -111,9 +112,6 @@ PointLight pLight2(glm::vec3(-2.f, -2.f, 2.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f, 32.f);
 
 
-
-
-
 void init(void)
 {
 	//Specifying the name of vertex and fragment shaders.
@@ -127,17 +125,14 @@ void init(void)
 	GLuint program = LoadShaders(shaders);
 	glUseProgram(program);	//My Pipeline is set up
 
+	//Set Projection Matrix
+	projection = glm::perspective(glm::radians(45.f), (GLfloat)WindowWidth / (GLfloat)WindowHeight, 0.1f, 100.f);
+	
+
+	////////////////////////////Get uniform location////////////////////////////////////////////
 	uniformModel = glGetUniformLocation(program, "model");
 	uniformView = glGetUniformLocation(program, "view");
 	uniformProj = glGetUniformLocation(program, "projection");
-
-	// Perspective arameters : Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-	// projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-	// Or, for an ortho camera :
-	// Ortho parameters: left, right, bottom, top, nearVal, farVal
-	//projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f); // In world coordinates
-	projection = glm::perspective(glm::radians(45.f), (GLfloat)WindowWidth / (GLfloat)WindowHeight, 0.1f, 100.f);
-	
 
 	//Set light1
 	glUniform1f(glGetUniformLocation(program, "pLight[0].base.ambientStrength"), pLight.ambientStrength);
@@ -167,126 +162,52 @@ void init(void)
 
 	uniformLightPos2 = glGetUniformLocation(program, "pLight[1].position");
 
-
-
+	//Get Eye position location
 	uniformEyePos = glGetUniformLocation(program, "eyePos");
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+	///////////////////////////////Create Meshes//////////////////////////////////////////
 	//Create All meshes
 	GeometryGenerator::GenerateMeshes();
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////Create Textures//////////////////////////////////////////
+	TextureManager::CreateTexture("Leather.jpg", "Leather", SOIL_LOAD_RGB);
+	TextureManager::CreateTexture("Fence.png", "Fence", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("Window.png", "Window", SOIL_LOAD_RGBA);
+	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 	//Create Objects
 	Object* pObject1 = new Object(uniformModel);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	vecObjects.push_back(pObject1);
 
 	pObject1 = new Object(uniformModel);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(4.f, 0.f, 0.f);
 	vecObjects.push_back(pObject1);
 
 	Object* pObject2 = new Object(uniformModel);
 	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
+	pObject2->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject2->SetPosition(4.f, 1.f, 0.f);
 	vecObjects.push_back(pObject2);
 
 	Object* pObject3 = new Object(uniformModel);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject3->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject3->SetPosition(0.f, 2.f, 0.f);
 	vecObjects.push_back(pObject3);
-
-
-	//////////////////////////////////Create Pyramid////////////////////////////////////////////////
-	//iNumOfPyramidIndices = sizeof(pyramid_indices) / sizeof(GLshort);
-	//iNumOfPyramidVertices = sizeof(pyramid_vertices) / (sizeof(GLfloat) * iVertexLength);
-	//calcAverageNormals(pyramid_indices, iNumOfPyramidIndices, pyramid_vertices, iNumOfPyramidVertices, iVertexLength, 5);
-
-
-	//glGenVertexArrays(1, &pyramid_vao);
-	//glBindVertexArray(pyramid_vao);
-
-	//	glGenBuffers(1, &pyramid_ibo);
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramid_ibo);
-	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pyramid_indices), pyramid_indices, GL_STATIC_DRAW);
-
-	//	glGenBuffers(1, &pyramid_points_vbo);
-	//	glBindBuffer(GL_ARRAY_BUFFER, pyramid_points_vbo);
-	//	glBufferData(GL_ARRAY_BUFFER, sizeof(pyramid_vertices), pyramid_vertices, GL_STATIC_DRAW);
-	//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, 0);
-	//	glEnableVertexAttribArray(0);
-
-	//	//tell location1 is for tex coordinate
-	//	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, (void*)(sizeof(pyramid_vertices[0]) * 3));
-	//	glEnableVertexAttribArray(1);
-
-	//	//tell location2 is for normal
-	//	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(pyramid_vertices[0])* iVertexLength, (void*)(sizeof(pyramid_vertices[0]) * 5));
-	//	glEnableVertexAttribArray(2);
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-	//////////////////////////////////Create Texture////////////////////////////////////////////////
-	GLint width, height;
-	unsigned char* image = SOIL_load_image("Leather.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-	if (image == nullptr)
-	{
-		printf("Error: image not found\n");
-	}
-	//glActiveTexture(GL_TEXTURE0);
-	glGenTextures(1, &iLeather_tex);
-	glBindTexture(GL_TEXTURE_2D, iLeather_tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	SOIL_free_image_data(image);
-
-
-
-
-
-	image = SOIL_load_image("Fence.png", &width, &height, 0, SOIL_LOAD_RGBA);
-	if (image == nullptr)
-	{
-		printf("Error: image not found\n");
-	}
-	glGenTextures(1, &iFence_tex);
-	glBindTexture(GL_TEXTURE_2D, iFence_tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	SOIL_free_image_data(image);
-
-	int a = 0;
-
-	image = SOIL_load_image("Window.png", &width, &height, 0, SOIL_LOAD_RGBA);
-	if (image == nullptr)
-	{
-		printf("Error: image not found\n");
-	}
-	glGenTextures(1, &iWindow_tex);
-	glBindTexture(GL_TEXTURE_2D, iWindow_tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	SOIL_free_image_data(image);
-
-
-	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -300,11 +221,6 @@ void init(void)
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH);
 }
-
-//---------------------------------------------------------------------
-//
-// display
-//
 
 void display(void)
 {
@@ -332,18 +248,12 @@ void display(void)
 
 
 
+
+	////////////////////////////////////Start Draw////////////////////////////////////////////
 	glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 
-
-
-	//Draw Plane
-	glBindTexture(GL_TEXTURE_2D, iLeather_tex);
-	static float fAngle = 0.f;
-	//fAngle += 1.f;
-	//if (fAngle >= 360.f)
-	//	fAngle -= 360.f;
 	for(int i =0 ; i < vecObjects.size(); ++i)
 		vecObjects[i]->Render();	
 	
@@ -372,11 +282,11 @@ void display(void)
 
 
 	glutSwapBuffers(); // Instead of double buffering.
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void idle()
 {
-	
 	//glutPostRedisplay();
 }
 
@@ -388,54 +298,14 @@ void timer(int id)
 
 void keyDown(unsigned char key, int x, int y)
 {
+	//Camera Keyboard Control
 	camera.KeyControl(key, deltaTime / 1000.f);
-	// Orthographic.
+
+
+
+
 	switch(key)
 	{
-		case 'w':
-			//camera.SetCameraPosition(camera.GetCameraPosition() += camera.GetFrontVector())
-			break;
-		//case 's':
-		//	CameraPosition.z += fCameraSpeed;
-		//	//osV += scrollSpd;
-		//	break;
-		//case 'a':
-		//	CameraPosition.x -= fCameraSpeed;
-		//	//osH += scrollSpd;
-		//	break;
-		//case 'd':
-		//	CameraPosition.x += fCameraSpeed;
-		//	//osH -= scrollSpd;
-		//	break;
-		//case 'r':
-		//	CameraPosition.y += fCameraSpeed;
-		//	break;
-		//case 'f':
-		//	CameraPosition.y -= fCameraSpeed;
-		//	break;
-
-		/*case 'i':
-			pLight.position.z -= fCameraSpeed;
-			break;
-		case 'k':
-			pLight.position.z += fCameraSpeed;
-			break;
-		case 'j':
-			pLight.position.x -= fCameraSpeed;
-			break;
-		case 'l':
-			pLight.position.x += fCameraSpeed;
-			break;
-		case 'p':
-			pLight.position.y += fCameraSpeed;
-			break;
-		case ';':
-			pLight.position.y -= fCameraSpeed;
-			break;*/
-
-
-
-
 		case 'q':
 			bWireFrameMode ? bWireFrameMode = false : bWireFrameMode = true;
 			if (bWireFrameMode)
@@ -458,7 +328,6 @@ void keyUp(unsigned char key, int x, int y)
 
 void mouseMove(int x, int y)
 {
-
 	if (camera.GetMouseFirstMoved())
 	{
 		camera.SetLastMouseX(x);

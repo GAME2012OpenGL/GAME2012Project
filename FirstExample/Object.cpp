@@ -4,7 +4,7 @@
 #include "glm\gtc\matrix_transform.hpp"
 
 Object::Object(GLuint uniformWorld)
-	:m_pMesh(nullptr), m_fAngle(0.f), m_uniformWorld(uniformWorld)
+	:m_pMesh(nullptr), m_iTexture(0), m_fAngle(0.f), m_uniformWorld(uniformWorld)
 {
 	m_WorldMatrix = glm::mat4(1.f);
 	m_Position = glm::vec3(0.f, 0.f, 0.f);
@@ -30,6 +30,8 @@ void Object::Update()
 void Object::Render()
 {
 	glUniformMatrix4fv(m_uniformWorld, 1, GL_FALSE, &m_WorldMatrix[0][0]);
+	glBindTexture(GL_TEXTURE_2D, m_iTexture);
+
 	m_pMesh->RenderMesh();
 }
 
