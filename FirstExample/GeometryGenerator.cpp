@@ -13,7 +13,7 @@ void GeometryGenerator::GenerateMeshes()
 	m_vecMeshes.push_back(pCube);
 
 	//Create Pyramid
-	Pyramid *pPyramid = new Pyramid;
+	Pyramid* pPyramid = new Pyramid;
 
 
 }

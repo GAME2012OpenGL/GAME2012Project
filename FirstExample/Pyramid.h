@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __CUBE__
-#define __CUBE__
+#ifndef __PYRAMID__
+#define __PYRAMID__
 
 #include "Mesh.h"
 
