@@ -16,8 +16,10 @@ using namespace std;
 #include "LoadShaders.h"
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
+#include <glm/gtc/type_ptr.hpp>
 #include "SoilLib/SOIL.h"
 #include <vector>
+#include "Camera.h"
 #include "Object.h"
 #include "GeometryGenerator.h"
 #include "Mesh.h"
@@ -48,18 +50,17 @@ GLuint iWindow_tex = 0;
 //float osH = 0.0f, osV = 0.0f, scrollSpd = 0.25f;
 
 int deltaTime, currentTime, lastTime = 0;
-glm::mat4 view, projection;
+glm::mat4 projection;
 
 int WindowWidth = 800;
 int WindowHeight = 600;
-
-glm::vec3 CameraPosition = glm::vec3(0.f, 0.f, 10);
-float fCameraSpeed = 0.5f;
 
 
 vector<Object*> vecObjects;
 
 bool bWireFrameMode = false;
+
+Camera camera(glm::vec3(0.f, 0.f, 10.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 7.f, 0.5f);
 
 
 struct Light
@@ -137,15 +138,6 @@ void init(void)
 	//projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f); // In world coordinates
 	projection = glm::perspective(glm::radians(45.f), (GLfloat)WindowWidth / (GLfloat)WindowHeight, 0.1f, 100.f);
 	
-	// Camera matrix
-	view = glm::lookAt
-	(
-		CameraPosition,		// Camera pos in World Space
-		glm::vec3(0, 0, 0),		// and looks at the origin
-		glm::vec3(0, 1, 0)		// Head is up (set to 0,-1,0 to look upside-down)
-	);
-
-
 
 	//Set light1
 	glUniform1f(glGetUniformLocation(program, "pLight[0].base.ambientStrength"), pLight.ambientStrength);
@@ -316,28 +308,21 @@ void display(void)
 	deltaTime = currentTime - lastTime;
 	lastTime = currentTime;
 
-	//Camera Update
-	view = glm::lookAt
-	(
-		CameraPosition,		// Camera pos in World Space
-		glm::vec3(0, 0, 0),		// and looks at the origin
-		glm::vec3(0, 1, 0)		// Head is up (set to 0,-1,0 to look upside-down)
-	);
-
+	//Update objects
 	for (int i = 0; i < vecObjects.size(); ++i)
 		vecObjects[i]->Update();
 	
 	//Set projection and view matrix in shader
 	glUniformMatrix4fv(uniformProj, 1, GL_FALSE, &projection[0][0]);
-	glUniformMatrix4fv(uniformView, 1, GL_FALSE, &view[0][0]);
-	
+	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.CalculateViewMatrix()));
 
 	//Set light position
 	glUniform3f(uniformLightPos, pLight.position.x, pLight.position.y, pLight.position.z);
 	glUniform3f(uniformLightPos2, pLight2.position.x, pLight2.position.y, pLight2.position.z);
 
 	//Set eye position
-	glUniform3f(uniformEyePos, CameraPosition.x, CameraPosition.y, CameraPosition.z);
+	glm::vec3 cameraPos = camera.GetCameraPosition();
+	glUniform3f(uniformEyePos, cameraPos.x, cameraPos.y, cameraPos.z);
 
 
 
@@ -398,33 +383,33 @@ void timer(int id)
 
 void keyDown(unsigned char key, int x, int y)
 {
+	camera.KeyControl(key, deltaTime / 1000.f);
 	// Orthographic.
 	switch(key)
 	{
 		case 'w':
-			CameraPosition.z -= fCameraSpeed;
-			//osV -= scrollSpd;
+			//camera.SetCameraPosition(camera.GetCameraPosition() += camera.GetFrontVector())
 			break;
-		case 's':
-			CameraPosition.z += fCameraSpeed;
-			//osV += scrollSpd;
-			break;
-		case 'a':
-			CameraPosition.x -= fCameraSpeed;
-			//osH += scrollSpd;
-			break;
-		case 'd':
-			CameraPosition.x += fCameraSpeed;
-			//osH -= scrollSpd;
-			break;
-		case 'r':
-			CameraPosition.y += fCameraSpeed;
-			break;
-		case 'f':
-			CameraPosition.y -= fCameraSpeed;
-			break;
+		//case 's':
+		//	CameraPosition.z += fCameraSpeed;
+		//	//osV += scrollSpd;
+		//	break;
+		//case 'a':
+		//	CameraPosition.x -= fCameraSpeed;
+		//	//osH += scrollSpd;
+		//	break;
+		//case 'd':
+		//	CameraPosition.x += fCameraSpeed;
+		//	//osH -= scrollSpd;
+		//	break;
+		//case 'r':
+		//	CameraPosition.y += fCameraSpeed;
+		//	break;
+		//case 'f':
+		//	CameraPosition.y -= fCameraSpeed;
+		//	break;
 
-		case 'i':
+		/*case 'i':
 			pLight.position.z -= fCameraSpeed;
 			break;
 		case 'k':
@@ -441,7 +426,7 @@ void keyDown(unsigned char key, int x, int y)
 			break;
 		case ';':
 			pLight.position.y -= fCameraSpeed;
-			break;
+			break;*/
 
 
 
@@ -468,7 +453,24 @@ void keyUp(unsigned char key, int x, int y)
 
 void mouseMove(int x, int y)
 {
-	//cout << "Mouse pos: " << x << "," << y << endl;
+
+	if (camera.GetMouseFirstMoved())
+	{
+		camera.SetLastMouseX(x);
+		camera.SetLastMouseY(y);
+		camera.SetMouseFirstMoved(false);
+		return;
+	}
+
+	camera.MouseControl(camera.GetLastMouseX() - x, camera.GetLastMouseY() - y);
+
+	camera.SetLastMouseX(x);
+	camera.SetLastMouseY(y);
+
+	//if (x != WindowWidth * 0.5 || y != WindowHeight * 0.5)
+	//{
+	//	glutWarpPointer(WindowWidth * 0.5, WindowHeight * 0.5);
+	//}
 }
 
 void mouseDown(int btn, int state, int x, int y)
