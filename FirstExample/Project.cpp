@@ -54,7 +54,7 @@ vector<Object*> vecObjects;
 
 bool bWireFrameMode = false;
 
-Camera camera(glm::vec3(0.f, 0.f, 10.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 7.f, 0.5f);
+Camera camera(glm::vec3(30.f, 10.f, 100.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 20.f, 0.5f);
 
 
 struct Light
@@ -108,16 +108,18 @@ struct PointLight : public Light
 };
 
 //Directional Light
-DirLight dirLight(glm::vec3(1.f, -1.f, 0.f),
+DirLight dirLight(glm::vec3(1.f, -1.f, -1.f),
 				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
 //50 range
-PointLight pLight(glm::vec3(2.f, 1.f, 2.f), 1.f, 0.09, 0.032f,
-				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
+PointLight pLight(glm::vec3(50.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+				  0.2f, glm::vec3(1.f, 0.f, 0.f), 1.f, 1.f);
 
-PointLight pLight2(glm::vec3(-2.f, -2.f, 2.f), 1.f, 0.09, 0.032f,
-				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
+PointLight pLight2(glm::vec3(90.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+				  0.2f, glm::vec3(0.f, 1.f, 0.f), 1.f, 1.f);
 
+void CreateTextures();
+void CreateObjects();
 
 void init(void)
 {
@@ -133,7 +135,7 @@ void init(void)
 	glUseProgram(program);	//My Pipeline is set up
 
 	//Set Projection Matrix
-	projection = glm::perspective(glm::radians(45.f), (GLfloat)WindowWidth / (GLfloat)WindowHeight, 0.1f, 100.f);
+	projection = glm::perspective(glm::radians(45.f), (GLfloat)WindowWidth / (GLfloat)WindowHeight, 0.1f, 1000.f);
 	
 
 	////////////////////////////Get uniform location////////////////////////////////////////////
@@ -191,46 +193,14 @@ void init(void)
 
 
 	///////////////////////////////Create Textures//////////////////////////////////////////
-	TextureManager::CreateTexture("Leather.jpg", "Leather", SOIL_LOAD_RGB);
-	TextureManager::CreateTexture("Fence.png", "Fence", SOIL_LOAD_RGBA);
-	TextureManager::CreateTexture("Window.png", "Window", SOIL_LOAD_RGBA);
-	TextureManager::CreateTexture("Grass.jpg", "Grass", SOIL_LOAD_RGB);
-	
+	CreateTextures();	
 	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 	/////////////////////////////////Create Objects///////////////////////////////
-	/*Object* pObject1 = new Object(uniformModel);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	vecObjects.push_back(pObject1);
-
-	pObject1 = new Object(uniformModel);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(4.f, 0.f, 0.f);
-	vecObjects.push_back(pObject1);
-
-	Object* pObject2 = new Object(uniformModel);
-	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
-	pObject2->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject2->SetPosition(4.f, 1.f, 0.f);
-	vecObjects.push_back(pObject2);
-
-	Object* pObject3 = new Object(uniformModel);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
-	pObject3->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject3->SetPosition(0.f, 2.f, 0.f);
-	vecObjects.push_back(pObject3);
-*/
-	Object* pObject1 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
-	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
-	pObject1->SetPosition(0.f, 0.f, 0.f);
-	pObject1->SetScale(100.f, 1.f, 100.f);
-	vecObjects.push_back(pObject1);
+	CreateObjects();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -430,4 +400,79 @@ int main(int argc, char** argv)
 
 	clean();
 
+}
+
+void CreateTextures()
+{
+	TextureManager::CreateTexture("../Texture/Leather.jpg", "Leather", SOIL_LOAD_RGB);
+	TextureManager::CreateTexture("../Texture/Fence.png", "Fence", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/Window.png", "Window", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/Grass.jpg", "Grass", SOIL_LOAD_RGB);
+	TextureManager::CreateTexture("../Texture/Wall.jpg", "Wall", SOIL_LOAD_RGB);
+}
+
+void CreateObjects()
+{
+	//Front wall
+	Object* pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(50.f, 10.f, 90.f);
+	pObject1->SetScale(38.f, 10.f, 2.f);
+	vecObjects.push_back(pObject1);
+
+	//Right wall
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(90.f, 10.f, 50.f);
+	pObject1->SetRotation(0.f, 1.f, 0.f, 90.f);
+	pObject1->SetScale(42.f, 10.f, 2.f);
+	vecObjects.push_back(pObject1);
+
+	//Left wall
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(10.f, 10.f, 50.f);
+	pObject1->SetRotation(0.f, 1.f, 0.f, 90.f);
+	pObject1->SetScale(42.f, 10.f, 2.f);
+	vecObjects.push_back(pObject1);
+
+	//Back wall
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(50.f, 10.f, 10.f);
+	pObject1->SetScale(38.f, 10.f, 2.f);
+	vecObjects.push_back(pObject1);
+
+
+
+
+
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetPosition(10.f, 2.f, 10.f);
+	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetPosition(15.f, 2.f, 15.f);
+	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetPosition(20.f, 2.f, 20.f);
+	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
+	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
+	pObject1->SetPosition(0.f, 0.f, 0.f);
+	pObject1->SetScale(100.f, 1.f, 100.f);
+	vecObjects.push_back(pObject1);
 }

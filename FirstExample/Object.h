@@ -40,6 +40,7 @@ public :
 	void SetMesh(Mesh* pMesh) { m_pMesh = pMesh; }
 	void SetTexture(GLuint iTexture) { m_iTexture = iTexture; }
 	void SetPosition(float X, float Y, float Z) { m_Position = glm::vec3(X, Y, Z); }
+	void SetRotation(float X, float Y, float Z, float fAngle) { m_RotationAxis = glm::vec3(X, Y, Z); m_fAngle = fAngle; }
 	void SetScale(float X, float Y, float Z) { m_Scale = glm::vec3(X, Y, Z); }
 
 };
