@@ -11,6 +11,13 @@ struct Light
 	float shininess;
 };
 
+struct DirLight
+{
+	Light base;
+
+	vec3 direction;
+};
+
 struct PointLight
 {
 	Light base;
@@ -30,10 +37,44 @@ out vec4 frag_colour;
 
 uniform sampler2D texture0;
 
+uniform DirLight dirLight;
+
 #define NR_POINT_LIGHTS 2
 uniform PointLight pLight[NR_POINT_LIGHTS];
 
 uniform vec3 eyePos;
+
+vec3 CalcDirLight(vec3 normal, vec3 viewDir)
+{
+	////////////calculate ambient//////////////////
+	vec3 ambient = dirLight.base.diffuseColor * dirLight.base.ambientStrength;
+	//////////////////////////////////////////////////////
+
+	////////////calculate diffuse//////////////////
+	vec3 lightDir = normalize(-dirLight.direction);
+	float diffuseFactor = max(dot(normal, lightDir), 0.f);
+	vec3 diffuse = dirLight.base.diffuseColor * dirLight.base.diffuseStrength * diffuseFactor;
+	//////////////////////////////////////////////////////
+
+	////////////calculate specular//////////////////
+	vec3 specular = vec3(0.f, 0.f, 0.f);
+	if(diffuseFactor > 0.f)
+	{
+		vec3 reflectDir = reflect(dirLight.direction, normal);
+		float specularFactor = dot(viewDir, reflectDir);
+
+		if(specularFactor > 0.f)
+		{
+			specularFactor = pow(specularFactor, dirLight.base.shininess);
+			specular = dirLight.base.diffuseColor * dirLight.base.specularStrength * specularFactor;
+		}
+	}
+	//////////////////////////////////////////////////////
+
+
+	return (ambient + diffuse + specular);
+}
+
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir)
 {
@@ -93,6 +134,10 @@ void main()
 	vec3 resultLight = vec3(0.f, 0.f, 0.f);
 	vec3 surfaceToEye = normalize(eyePos - WorldPos);
 
+	//Calculate Directional light
+	resultLight = CalcDirLight(norm, surfaceToEye);
+
+	//Calculate All Point Light
 	for(int i = 0; i < NR_POINT_LIGHTS; ++i)
 	{
 		resultLight += CalcPointLight(pLight[i], norm, surfaceToEye);

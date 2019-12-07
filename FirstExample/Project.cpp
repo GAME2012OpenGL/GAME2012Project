@@ -1,5 +1,5 @@
 ﻿//***************************************************************************
-// Project.cpp by Jang Doosung, Junhyuk Kang, Junho Kim (C) 2018 All Rights Reserved.
+// Project.cpp by Doosung Jang, Junhyuk Kang, Junho Kim (C) 2018 All Rights Reserved.
 //
 // Project submission.
 //
@@ -41,10 +41,6 @@ GLuint uniformLightPos = 0;
 GLuint uniformLightPos2 = 0;
 GLuint uniformEyePos = 0;
 
-//float rotAngle = 0.0f;
-
-// Horizontal and vertical ortho offsets.
-//float osH = 0.0f, osV = 0.0f, scrollSpd = 0.25f;
 
 int deltaTime, currentTime, lastTime = 0;
 glm::mat4 projection;
@@ -83,6 +79,18 @@ struct Light
 
 };
 
+struct DirLight : public Light
+{
+	glm::vec3 direction;
+
+	DirLight(glm::vec3 dir, 
+			GLfloat aStr, glm::vec3 dCol, GLfloat dStr, GLfloat sStr, GLfloat shin)
+		:Light(aStr, dCol, dStr, sStr, shin)
+	{
+		direction = dir;
+	}
+};
+
 struct PointLight : public Light
 {
 	glm::vec3 position;
@@ -99,6 +107,10 @@ struct PointLight : public Light
 		exponent = exp;
 	}
 };
+
+//Directional Light
+DirLight dirLight(glm::vec3(1.f, -1.f, 0.f),
+				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f, 32.f);
 
 //50 range
 PointLight pLight(glm::vec3(2.f, 2.f, -2.f), 1.f, 0.09, 0.032f,
@@ -129,6 +141,15 @@ void init(void)
 	uniformModel = glGetUniformLocation(program, "model");
 	uniformView = glGetUniformLocation(program, "view");
 	uniformProj = glGetUniformLocation(program, "projection");
+
+	//Set Directional light
+	glUniform1f(glGetUniformLocation(program, "dirLight.base.ambientStrength"), dirLight.ambientStrength);
+	glUniform3f(glGetUniformLocation(program, "dirLight.base.diffuseColor"), dirLight.diffuseColor.x, dirLight.diffuseColor.y, dirLight.diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "dirLight.base.diffuseStrength"), dirLight.diffuseStrength);
+	glUniform1f(glGetUniformLocation(program, "dirLight.base.specularStrength"), dirLight.specularStrength);
+	glUniform1f(glGetUniformLocation(program, "dirLight.base.shininess"), dirLight.shininess);
+
+	glUniform3f(glGetUniformLocation(program, "dirLight.direction"), dirLight.direction.x, dirLight.direction.y, dirLight.direction.z);
 
 	//Set light1
 	glUniform1f(glGetUniformLocation(program, "pLight[0].base.ambientStrength"), pLight.ambientStrength);
