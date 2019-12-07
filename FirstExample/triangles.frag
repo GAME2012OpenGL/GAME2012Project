@@ -8,7 +8,6 @@ struct Light
 	float diffuseStrength;
 
 	float specularStrength;
-	float shininess;
 };
 
 struct DirLight
@@ -43,6 +42,7 @@ uniform DirLight dirLight;
 uniform PointLight pLight[NR_POINT_LIGHTS];
 
 uniform vec3 eyePos;
+uniform float Shininess;
 
 vec3 CalcDirLight(vec3 normal, vec3 viewDir)
 {
@@ -65,7 +65,7 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir)
 
 		if(specularFactor > 0.f)
 		{
-			specularFactor = pow(specularFactor, dirLight.base.shininess);
+			specularFactor = pow(specularFactor, Shininess);
 			specular = dirLight.base.diffuseColor * dirLight.base.specularStrength * specularFactor;
 		}
 	}
@@ -107,7 +107,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir)
 
 		if(specularFactor > 0.f)
 		{
-			specularFactor = pow(specularFactor, light.base.shininess);
+			specularFactor = pow(specularFactor, Shininess);
 			specular = light.base.diffuseColor * light.base.specularStrength * specularFactor;
 		}
 	}
@@ -135,7 +135,7 @@ void main()
 	vec3 surfaceToEye = normalize(eyePos - WorldPos);
 
 	//Calculate Directional light
-	resultLight = CalcDirLight(norm, surfaceToEye);
+	resultLight += CalcDirLight(norm, surfaceToEye);
 
 	//Calculate All Point Light
 	for(int i = 0; i < NR_POINT_LIGHTS; ++i)

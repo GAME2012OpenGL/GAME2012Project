@@ -91,6 +91,7 @@
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Pyramid_kindof.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Pyramid_kindof.h" />
     <ClInclude Include="TextureManager.h" />

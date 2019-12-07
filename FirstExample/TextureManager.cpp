@@ -9,7 +9,7 @@ void TextureManager::CreateTexture(const char* filePath, const char* textureKey,
 	unsigned char* image = SOIL_load_image(filePath, &width, &height, 0, force_channels);
 	if (image == nullptr)
 	{
-		printf("Error: image not found\n");
+		printf("Error: %s image not found\n", filePath);
 	}
 	//glActiveTexture(GL_TEXTURE0);
 	GLuint texture = 0;

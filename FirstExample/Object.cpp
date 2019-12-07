@@ -3,8 +3,8 @@
 #include "Mesh.h"
 #include "glm\gtc\matrix_transform.hpp"
 
-Object::Object(GLuint uniformWorld)
-	:m_pMesh(nullptr), m_iTexture(0), m_fAngle(0.f), m_uniformWorld(uniformWorld)
+Object::Object(GLuint uniformWorld, GLuint uniformShininess, float fShininess)
+	:m_pMesh(nullptr), m_iTexture(0), m_fAngle(0.f), m_fShininess(fShininess), m_uniformWorld(uniformWorld), m_uniformShininess(uniformShininess)
 {
 	m_WorldMatrix = glm::mat4(1.f);
 	m_Position = glm::vec3(0.f, 0.f, 0.f);
@@ -30,6 +30,7 @@ void Object::Update()
 void Object::Render()
 {
 	glUniformMatrix4fv(m_uniformWorld, 1, GL_FALSE, &m_WorldMatrix[0][0]);
+	glUniform1f(m_uniformShininess, m_fShininess);
 	glBindTexture(GL_TEXTURE_2D, m_iTexture);
 
 	m_pMesh->RenderMesh();

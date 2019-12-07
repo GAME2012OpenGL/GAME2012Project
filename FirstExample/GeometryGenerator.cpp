@@ -3,10 +3,11 @@
 #include "Cube.h"
 #include "Pyramid.h"
 #include "Pyramid_kindof.h"
+#include "Plane.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
-void GeometryGenerator::GenerateMeshes()
+void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 {
 	//Create Cube Mesh
 	Cube* pCube = new Cube;
@@ -22,6 +23,11 @@ void GeometryGenerator::GenerateMeshes()
 	PyramidKindOf* pPyramid_kindof = new PyramidKindOf;
 	pPyramid_kindof->CreateMesh();
 	m_vecMeshes.push_back(pPyramid_kindof);
+
+	//Create Plane
+	Plane* pPlane = new Plane;
+	pPlane->CreateMesh(iNumOfPlaneGrid);
+	m_vecMeshes.push_back(pPlane);
 }
 
 void GeometryGenerator::DestroyMeshes()
@@ -40,5 +46,4 @@ Mesh* GeometryGenerator::GetMesh(EMeshList meshType)
 		return nullptr;
 
 	return m_vecMeshes[meshType];
-	return nullptr;
 }

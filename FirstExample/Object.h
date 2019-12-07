@@ -18,11 +18,13 @@ private :
 	glm::vec3 m_Scale;
 
 	float m_fAngle;
+	float m_fShininess;
 
 	GLuint m_uniformWorld;
+	GLuint m_uniformShininess;
 
 public :
-	Object(GLuint uniformWorld);
+	Object(GLuint uniformWorld, GLuint uniformShininess, float fShininess);
 	~Object();
 
 	void Update();
@@ -38,6 +40,7 @@ public :
 	void SetMesh(Mesh* pMesh) { m_pMesh = pMesh; }
 	void SetTexture(GLuint iTexture) { m_iTexture = iTexture; }
 	void SetPosition(float X, float Y, float Z) { m_Position = glm::vec3(X, Y, Z); }
+	void SetScale(float X, float Y, float Z) { m_Scale = glm::vec3(X, Y, Z); }
 
 };
 

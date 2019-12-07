@@ -40,6 +40,7 @@ GLuint uniformProj = 0;
 GLuint uniformLightPos = 0;
 GLuint uniformLightPos2 = 0;
 GLuint uniformEyePos = 0;
+GLuint uniformShininess = 0;
 
 
 int deltaTime, currentTime, lastTime = 0;
@@ -64,9 +65,8 @@ struct Light
 	GLfloat diffuseStrength;
 
 	GLfloat specularStrength;
-	GLfloat shininess;
 
-	Light(GLfloat aStr, glm::vec3 dCol, GLfloat dStr, GLfloat sStr, GLfloat shin)
+	Light(GLfloat aStr, glm::vec3 dCol, GLfloat dStr, GLfloat sStr)
 	{
 		ambientStrength = aStr;
 
@@ -74,7 +74,6 @@ struct Light
 		diffuseStrength = dStr;
 
 		specularStrength = sStr;
-		shininess = shin;
 	}
 
 };
@@ -84,8 +83,8 @@ struct DirLight : public Light
 	glm::vec3 direction;
 
 	DirLight(glm::vec3 dir, 
-			GLfloat aStr, glm::vec3 dCol, GLfloat dStr, GLfloat sStr, GLfloat shin)
-		:Light(aStr, dCol, dStr, sStr, shin)
+			GLfloat aStr, glm::vec3 dCol, GLfloat dStr, GLfloat sStr)
+		:Light(aStr, dCol, dStr, sStr)
 	{
 		direction = dir;
 	}
@@ -97,8 +96,8 @@ struct PointLight : public Light
 	GLfloat constant, linear, exponent;	//Quadratic equation for attenuation
 
 	PointLight(glm::vec3 pos, GLfloat con, GLfloat lin, GLfloat exp,
-		GLfloat aStr, glm::vec3 dCol, GLfloat dStr, GLfloat sStr, GLfloat shin)
-		:Light(aStr, dCol, dStr, sStr, shin)
+		GLfloat aStr, glm::vec3 dCol, GLfloat dStr, GLfloat sStr)
+		:Light(aStr, dCol, dStr, sStr)
 	{
 		position = pos;
 
@@ -110,14 +109,14 @@ struct PointLight : public Light
 
 //Directional Light
 DirLight dirLight(glm::vec3(1.f, -1.f, 0.f),
-				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f, 32.f);
+				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
 //50 range
-PointLight pLight(glm::vec3(2.f, 2.f, -2.f), 1.f, 0.09, 0.032f,
-				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f, 32.f);
+PointLight pLight(glm::vec3(2.f, 1.f, 2.f), 1.f, 0.09, 0.032f,
+				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
 PointLight pLight2(glm::vec3(-2.f, -2.f, 2.f), 1.f, 0.09, 0.032f,
-				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f, 32.f);
+				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
 
 void init(void)
@@ -141,13 +140,13 @@ void init(void)
 	uniformModel = glGetUniformLocation(program, "model");
 	uniformView = glGetUniformLocation(program, "view");
 	uniformProj = glGetUniformLocation(program, "projection");
+	uniformShininess = glGetUniformLocation(program, "Shininess");
 
 	//Set Directional light
 	glUniform1f(glGetUniformLocation(program, "dirLight.base.ambientStrength"), dirLight.ambientStrength);
 	glUniform3f(glGetUniformLocation(program, "dirLight.base.diffuseColor"), dirLight.diffuseColor.x, dirLight.diffuseColor.y, dirLight.diffuseColor.z);
 	glUniform1f(glGetUniformLocation(program, "dirLight.base.diffuseStrength"), dirLight.diffuseStrength);
 	glUniform1f(glGetUniformLocation(program, "dirLight.base.specularStrength"), dirLight.specularStrength);
-	glUniform1f(glGetUniformLocation(program, "dirLight.base.shininess"), dirLight.shininess);
 
 	glUniform3f(glGetUniformLocation(program, "dirLight.direction"), dirLight.direction.x, dirLight.direction.y, dirLight.direction.z);
 
@@ -156,7 +155,6 @@ void init(void)
 	glUniform3f(glGetUniformLocation(program, "pLight[0].base.diffuseColor"), pLight.diffuseColor.x, pLight.diffuseColor.y, pLight.diffuseColor.z);
 	glUniform1f(glGetUniformLocation(program, "pLight[0].base.diffuseStrength"), pLight.diffuseStrength);
 	glUniform1f(glGetUniformLocation(program, "pLight[0].base.specularStrength"), pLight.specularStrength);
-	glUniform1f(glGetUniformLocation(program, "pLight[0].base.shininess"), pLight.shininess);
 
 	glUniform3f(glGetUniformLocation(program, "pLight[0].position"), pLight.position.x, pLight.position.y, pLight.position.z);
 	glUniform1f(glGetUniformLocation(program, "pLight[0].constant"), pLight.constant);
@@ -170,7 +168,6 @@ void init(void)
 	glUniform3f(glGetUniformLocation(program, "pLight[1].base.diffuseColor"), pLight2.diffuseColor.x, pLight2.diffuseColor.y, pLight2.diffuseColor.z);
 	glUniform1f(glGetUniformLocation(program, "pLight[1].base.diffuseStrength"), pLight2.diffuseStrength);
 	glUniform1f(glGetUniformLocation(program, "pLight[1].base.specularStrength"), pLight2.specularStrength);
-	glUniform1f(glGetUniformLocation(program, "pLight[1].base.shininess"), pLight2.shininess);
 
 	glUniform3f(glGetUniformLocation(program, "pLight[1].position"), pLight2.position.x, pLight2.position.y, pLight2.position.z);
 	glUniform1f(glGetUniformLocation(program, "pLight[1].constant"), pLight2.constant);
@@ -188,21 +185,24 @@ void init(void)
 
 	///////////////////////////////Create Meshes//////////////////////////////////////////
 	//Create All meshes
-	GeometryGenerator::GenerateMeshes();
+	GeometryGenerator::GenerateMeshes(16);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 	///////////////////////////////Create Textures//////////////////////////////////////////
 	TextureManager::CreateTexture("Leather.jpg", "Leather", SOIL_LOAD_RGB);
 	TextureManager::CreateTexture("Fence.png", "Fence", SOIL_LOAD_RGBA);
 	TextureManager::CreateTexture("Window.png", "Window", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("Grass.jpg", "Grass", SOIL_LOAD_RGB);
+	
 	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-	//Create Objects
-	Object* pObject1 = new Object(uniformModel);
+	/////////////////////////////////Create Objects///////////////////////////////
+	/*Object* pObject1 = new Object(uniformModel);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	vecObjects.push_back(pObject1);
@@ -224,6 +224,13 @@ void init(void)
 	pObject3->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject3->SetPosition(0.f, 2.f, 0.f);
 	vecObjects.push_back(pObject3);
+*/
+	Object* pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
+	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
+	pObject1->SetPosition(0.f, 0.f, 0.f);
+	pObject1->SetScale(100.f, 1.f, 100.f);
+	vecObjects.push_back(pObject1);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
