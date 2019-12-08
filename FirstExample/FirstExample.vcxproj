@@ -96,6 +96,7 @@
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Pyramid_kindof.cpp" />
+    <ClCompile Include="Rhombus.cpp" />
     <ClCompile Include="Sandwich.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
@@ -114,6 +115,7 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Pyramid_kindof.h" />
+    <ClInclude Include="Rhombus.h" />
     <ClInclude Include="Sandwich.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>

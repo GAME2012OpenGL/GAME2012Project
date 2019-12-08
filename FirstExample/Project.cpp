@@ -512,5 +512,8 @@ void CreateObjects()
 	pObject1->SetPosition(15.f, 5.f, 15.f);
 	vecObjects.push_back(pObject1);
 
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_))
+
 
 }

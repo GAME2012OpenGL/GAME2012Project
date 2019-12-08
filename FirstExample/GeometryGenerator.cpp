@@ -6,6 +6,7 @@
 #include "Plane.h"
 #include "Sandwich.h"
 #include "Cylinder.h"
+#include "Rhombus.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
@@ -40,6 +41,8 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	Cylinder* pCylinder = new Cylinder;
 	pCylinder->CreateMesh();
 	m_vecMeshes.push_back(pCylinder);
+
+	
 }
 
 void GeometryGenerator::DestroyMeshes()
