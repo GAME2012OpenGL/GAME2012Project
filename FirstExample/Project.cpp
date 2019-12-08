@@ -447,7 +447,13 @@ void CreateObjects()
 	pObject1->SetScale(38.f, 10.f, 2.f);
 	vecObjects.push_back(pObject1);
 
-
+	//Castle Pillar1
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(10.f, 15.f, 90.f);
+	pObject1->SetScale(5.f, 30.f, 5.f);
+	vecObjects.push_back(pObject1);
 
 
 
@@ -482,10 +488,5 @@ void CreateObjects()
 	pObject1->SetPosition(15.f, 5.f, 15.f);
 	vecObjects.push_back(pObject1);
 
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject1->SetTexture(TextureManager::GetTexture("Window"));
-	pObject1->SetPosition(30.f, 5.f, 30.f);
-	vecObjects.push_back(pObject1);
 
 }
