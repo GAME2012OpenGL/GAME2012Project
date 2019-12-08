@@ -42,7 +42,9 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	pCylinder->CreateMesh();
 	m_vecMeshes.push_back(pCylinder);
 
-	
+	Rhombus* pRhombus = new Rhombus;
+	pRhombus->CreateMesh();
+	m_vecMeshes.push_back(pRhombus);
 }
 
 void GeometryGenerator::DestroyMeshes()
