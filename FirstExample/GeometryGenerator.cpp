@@ -4,6 +4,7 @@
 #include "Pyramid.h"
 #include "Pyramid_kindof.h"
 #include "Plane.h"
+#include "Sandwich.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
@@ -28,6 +29,11 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	Plane* pPlane = new Plane;
 	pPlane->CreateMesh(iNumOfPlaneGrid);
 	m_vecMeshes.push_back(pPlane);
+
+	//Create Sandwich
+	Sandwich* pSandwich = new Sandwich;
+	pSandwich->CreateMesh();
+	m_vecMeshes.push_back(pSandwich);
 }
 
 void GeometryGenerator::DestroyMeshes()
