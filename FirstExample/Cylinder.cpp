@@ -15,13 +15,13 @@ Cylinder::~Cylinder()
 void Cylinder::CreateMesh()
 {
 	const float PI = 3.1415926f;
-	float sectorCount = 10.f;
+	float sectorCount = 36.f;
 	float sectorStep = 2 * PI / sectorCount;
 	float sectorAngle = 0.f;  // radian
 
 	//Top circle + center of circle
 	m_vertexCount = sectorCount + 1;
-	GLfloat* vertices = new GLfloat[m_vertexCount * m_vertexLength];
+	GLfloat* vertices = new GLfloat[(m_vertexCount * m_vertexLength)];
 	int iIndex = 0;
 
 	//Center of circle
@@ -73,33 +73,6 @@ void Cylinder::CreateMesh()
 			indices[iIndex + 2] = i + 1;
 		iIndex += 3;
 	}
-
-	////Create Index
-	//m_indexCount = (iNumOfGrid * iNumOfGrid) * 2 * 3;
-	//GLshort* plane_indices = new GLshort[m_indexCount];
-	//iIndex = 0;
-	//for (int j = 0; j < iNumOfGrid; ++j)
-	//{
-	//	for (int i = 0; i < iNumOfGrid; ++i)
-	//	{
-	//		int row1 = j * (iNumOfGrid + 1);
-	//		int row2 = (j + 1) * (iNumOfGrid + 1);
-
-	//		// triangle 1
-	//		plane_indices[iIndex] = row1 + i;
-	//		plane_indices[iIndex + 1] = row2 + i + 1;
-	//		plane_indices[iIndex + 2] = row1 + i + 1;
-	//		iIndex += 3;
-
-	//		// triangle 2
-	//		plane_indices[iIndex] = row1 + i;
-	//		plane_indices[iIndex + 1] = row2 + i;
-	//		plane_indices[iIndex + 2] = row2 + i + 1;
-	//		iIndex += 3;
-	//	}
-	//}
-
-
 
 	//Mesh::calcAverageNormals(plane_indices, m_indexCount, plane_vertices, m_vertexCount, m_vertexLength, 5);
 
