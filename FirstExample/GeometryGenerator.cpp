@@ -7,6 +7,7 @@
 #include "Sandwich.h"
 #include "Cylinder.h"
 #include "Rhombus.h"
+#include "SpearTip.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
@@ -45,6 +46,10 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	Rhombus* pRhombus = new Rhombus;
 	pRhombus->CreateMesh();
 	m_vecMeshes.push_back(pRhombus);
+
+	SpearTip* pSpearTip = new SpearTip;
+	pSpearTip->CreateMesh();
+	m_vecMeshes.push_back(pSpearTip);
 }
 
 void GeometryGenerator::DestroyMeshes()

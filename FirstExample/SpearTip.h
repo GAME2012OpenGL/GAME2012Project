@@ -6,11 +6,11 @@
 
 class SpearTip : public Mesh
 {
+public:
 	SpearTip();
 	~SpearTip();
 
 	void CreateMesh();
 };
-
 
 #endif // !__SPEARTIP__
