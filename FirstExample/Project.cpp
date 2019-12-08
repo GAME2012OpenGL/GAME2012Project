@@ -457,6 +457,13 @@ void CreateObjects()
 	pObject1->SetPosition(10.f, 2.f, 10.f);
 	vecObjects.push_back(pObject1);
 
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
+	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
+	pObject1->SetPosition(0.f, 0.f, 0.f);
+	pObject1->SetScale(100.f, 1.f, 100.f);
+	vecObjects.push_back(pObject1);
+
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
@@ -469,10 +476,10 @@ void CreateObjects()
 	pObject1->SetPosition(20.f, 2.f, 20.f);
 	vecObjects.push_back(pObject1);
 
-	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
-	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
-	pObject1->SetPosition(0.f, 0.f, 0.f);
-	pObject1->SetScale(100.f, 1.f, 100.f);
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_SANDWICH));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetPosition(15.f, 5.f, 15.f);
 	vecObjects.push_back(pObject1);
+
 }
