@@ -9,6 +9,7 @@
 #include "Rhombus.h"
 #include "Octahedron.h"
 #include "UpperRoof.h"
+#include "Trapezoid.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
@@ -57,6 +58,10 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	Octahedron* pOctahedron = new Octahedron;
 	pOctahedron->CreateMesh();
 	m_vecMeshes.push_back(pOctahedron);
+
+	Trapezoid* pTrapezoid = new Trapezoid;
+	pTrapezoid->CreateMesh();
+	m_vecMeshes.push_back(pTrapezoid);
 
 }
 

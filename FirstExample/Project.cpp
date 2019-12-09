@@ -517,7 +517,7 @@ void CreateObjects()
 	vecObjects.push_back(pObject1);
 
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_Octahedron));
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(30.f, 10.f, 30.f);
 	vecObjects.push_back(pObject1);
@@ -526,5 +526,11 @@ void CreateObjects()
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_UPPERROOF));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(45.f, 10.f, 45.f);
+	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetPosition(60.f, 10.f, 60.f);
 	vecObjects.push_back(pObject1);
 }
