@@ -4,7 +4,7 @@
 
 #include "Mesh.h"
 
-class UpperRoof
+class UpperRoof : public Mesh
 {
 public:
 	UpperRoof();

@@ -15,75 +15,54 @@ void UpperRoof::CreateMesh()
 	GLfloat UpperRoof_vertices[] =
 	{
 		//Front
-		//x, y, z				u, v		nx, ny, nz
-		-2.0f, -2.0f, 2.0f,		0, 1,		0, 0, 0,	// 0.
-		1.0f, -1.0f, 1.0f,		1, 1,		0, 0, 0,	// 1
-		0.5f, 0.5f, 0.5f,		1, 0,		0, 0, 0,	// 2.
-		-0.5f, 0.5f, 0.5f,		0, 0,		0, 0, 0,	// 3.
-
-		//Right
-		1.0f, -1.0f, 1.0f,			0, 1,		0, 0, 0,	// 4
-		1.0f, -1.0f, -1.0f,			1, 1,		0, 0, 0,	// 5
-		0.5f, 0.5f, -0.5f,			1, 0,		0, 0, 0,	// 6
-		0.5f, 0.5f, 0.5f,			0, 0,		0, 0, 0,	// 7.
+		//x, y, z			u, v		nx, ny, nz
+		-2.f,0.f,2.f,		0,0,		0,0,0,
+		2.f,0.f,2.f,		1,0,		0,0,0,
+		1.f,1.f,0.f,		1,1,		0,0,0,	
+		-1.f,1.f,0.f,		0,1,		0,0,0,
 
 		//Left
-		-1.0f, -1.0f, -1.0f,		0, 1,		0, 0, 0,	// 8
-		-1.0f, -1.0f, 1.0f,			1, 1,		0, 0, 0,	// 9
-		-0.5f, 0.5f, 0.5f,			1, 0,		0, 0, 0,	// 10
-		-0.5f, 0.5f, -0.5f,			0, 0,		0, 0, 0,	// 11
+		-2.f,0.f,-2.f,		0,0,		0,0,0,
+		-2.f,0.f,2.f,		1,0,		0,0,0,
+		-1.f,1.f,0.f,		0.5,1,		0,0,0,
+
+		//Right
+		2.f,0.f,2.f,		0,0,		0,0,0,
+		2.f,0.f,-2.f,		1,0,		0,0,0,
+		1.f,1.f,0.f,		0.5,1,		0,0,0,
 
 		//Back
-		1.0f, -1.0f, -1.0f,			0, 1,		0, 0, 0,	// 12
-		-1.0f, -1.0f, -1.0f,		1, 1,		0, 0, 0,	// 13
-		-0.5f, 0.5f, -0.5f,			1, 0,		0, 0, 0,	// 14
-		0.5f, 0.5f, -0.5f,			0, 0,		0, 0, 0,	// 15
+		2.f,0.f,-2.f,		0,0,		0,0,0,
+		-2.f,0.f,-2.f,		1,0,		0,0,0,
+		-1.f,1.f,0.f,		1,1,		0,0,0,
+		1.f,1.f,0.f,		0,1,		0,0,0,
 
-		//Up
-		-0.5f, 0.5f, 0.5f,			0, 1,		0, 0, 0,	//16
-		0.5f, 0.5f, 0.5f,			1, 1,		0, 0, 0,	//17
-		0.5f, 0.5f, -0.5f,			1, 0,		0, 0, 0,	//18
-		-0.5f, 0.5f, -0.5f,			0, 0,		0, 0, 0,	//19
-
-		//Down
-		-1.0f, -1.0f, -1.0f,		0, 1,		0, 0, 0,	//20
-		1.0f, -1.0f, -1.0f,			1, 1,		0, 0, 0,	//21
-		1.0f, -1.0f, 1.0f,			1, 0,		0, 0, 0,	//22
-		-1.0f, -1.0f, 1.0f,			0, 0,		0, 0, 0		//23
-
+		//Bottom
+		-2.f,0.f,2.f,		0,0,		0,0,0,
+		2.f,0.f,2.f,		1,0,		0,0,0,
+		2.f,0.f,-2.f,		1,1,		0,0,0,
+		-2.f,0.f,-2.f,		0,1,		0,0,0
 	};
 
-	GLshort pyramidkindof_indices[] =
+	GLshort UpperRoof_indices[] =
 	{
-		//Front
-		0, 1, 3,
-		1, 2, 3,
+		0,1,2,
+		0,2,3,
 
-		//Right
-		4, 5, 7,
-		5, 6, 7,
+		4,5,6,
 
-		//Left
-		8, 9, 11,
-		9, 10, 11,
+		7,8,9,
 
-		//Back
-		12, 13, 15,
-		13, 14, 15,
+		10,11,12,
+		10,12,13,
 
-		//Up
-		16, 17, 19,
-		17, 18, 19,
-
-		//DOwn
-		20, 21, 23,
-		21, 22, 23
-
+		15,14,17,
+		15,17,16
 	};
 
-	m_indexCount = sizeof(pyramidkindof_indices) / sizeof(GLshort);
-	m_vertexCount = sizeof(pyramidkindof_vertices) / (sizeof(GLfloat) * m_vertexLength);
-	Mesh::calcAverageNormals(pyramidkindof_indices, m_indexCount, pyramidkindof_vertices, m_vertexCount, m_vertexLength, 5);
+	m_indexCount = sizeof(UpperRoof_indices) / sizeof(GLshort);
+	m_vertexCount = sizeof(UpperRoof_vertices) / (sizeof(GLfloat) * m_vertexLength);
+	Mesh::calcAverageNormals(UpperRoof_indices, m_indexCount, UpperRoof_vertices, m_vertexCount, m_vertexLength, 5);
 
-	Mesh::CreateMesh(pyramidkindof_vertices, pyramidkindof_indices, m_vertexCount, m_indexCount);
+	Mesh::CreateMesh(UpperRoof_vertices, UpperRoof_indices, m_vertexCount, m_indexCount);
 }

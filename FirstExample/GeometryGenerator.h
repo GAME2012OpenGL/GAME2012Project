@@ -11,7 +11,7 @@ class GeometryGenerator
 public :
 	enum EMeshList{MESH_CUBE,MESH_PYRAMID, MESH_PYRAMIDKINDOF, MESH_PLANE, 
 				   MESH_SANDWICH, MESH_CYLINDER, MESH_RHOMBUS, 
-				   MESH_SPEARTIP, MESH_END};
+				   MESH_Octahedron, MESH_UPPERROOF, MESH_END};
 
 private :
 	static std::vector<Mesh*> m_vecMeshes;
