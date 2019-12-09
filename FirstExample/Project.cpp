@@ -420,7 +420,7 @@ void CreateObjects()
 	pObject1->SetPosition(50.f, 10.f, 90.f);
 	pObject1->SetScale(38.f, 10.f, 2.f);
 	vecObjects.push_back(pObject1);
-
+	
 	//Right wall
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
@@ -429,7 +429,7 @@ void CreateObjects()
 	pObject1->SetRotation(0.f, 1.f, 0.f, 90.f);
 	pObject1->SetScale(42.f, 10.f, 2.f);
 	vecObjects.push_back(pObject1);
-
+	
 	//Left wall
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
@@ -438,7 +438,7 @@ void CreateObjects()
 	pObject1->SetRotation(0.f, 1.f, 0.f, 90.f);
 	pObject1->SetScale(42.f, 10.f, 2.f);
 	vecObjects.push_back(pObject1);
-
+	
 	//Back wall
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
@@ -446,7 +446,7 @@ void CreateObjects()
 	pObject1->SetPosition(50.f, 10.f, 10.f);
 	pObject1->SetScale(38.f, 10.f, 2.f);
 	vecObjects.push_back(pObject1);
-
+	
 	//Castle Pillar1
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
@@ -454,22 +454,22 @@ void CreateObjects()
 	pObject1->SetPosition(10.f, 15.f, 90.f);
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
-
-
-
+	
+	
+	
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(10.f, 2.f, 10.f);
 	vecObjects.push_back(pObject1);
-
+	
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
 	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
 	pObject1->SetPosition(0.f, 0.f, 0.f);
 	pObject1->SetScale(100.f, 1.f, 100.f);
 	vecObjects.push_back(pObject1);
-
+	
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));

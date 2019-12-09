@@ -40,6 +40,10 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	Cylinder* pCylinder = new Cylinder;
 	pCylinder->CreateMesh();
 	m_vecMeshes.push_back(pCylinder);
+
+	//Create Upper roof
+	UpperRoof* pURoof = new UpperRoof;
+
 }
 
 void GeometryGenerator::DestroyMeshes()
