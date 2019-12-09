@@ -22,7 +22,7 @@ void main()
 	//So far, we've only used matrices to transform coordinates. The problem is that normals are not coordinates, 
 	//they are unit vectors representing directions. Rotation transformations are fine, because the rotating a unit vector results in another 
 	//unit vector, but scaling or translating a normal will result in an incorrect normal. The solution is to multiply the normals 
-	//by a different matrix – one that has the translation and scaling parts fixed.
+	//by a different matrix ?one that has the translation and scaling parts fixed.
 	//Removing the translation part of a 4x4 matrix is simple: we just remove the 4th column and row, converting it to a 3x3 matrix. 
 	//Fixing the scaling is a bit trickier, but I'll jump straight to the answer, which is to invert and transpose the matrix. 
 	//We will also need to renormalise each normal after it has been transformed, to ensure that it is still a unit vector. 
