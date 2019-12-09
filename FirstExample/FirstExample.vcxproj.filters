@@ -54,7 +54,14 @@
     <ClCompile Include="Cylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="UpperRoof.cpp">
+=======
+    <ClCompile Include="Rhombus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpearTip.cpp">
+>>>>>>> b41ee16738e62f6e56a6f2a21de8ec509b293ebc
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -103,7 +110,14 @@
     <ClInclude Include="Cylinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="UpperRoof.h">
+=======
+    <ClInclude Include="Rhombus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpearTip.h">
+>>>>>>> b41ee16738e62f6e56a6f2a21de8ec509b293ebc
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
