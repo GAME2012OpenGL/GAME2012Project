@@ -475,6 +475,14 @@ void CreateObjects()
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
 
+	//Castle Pillar2's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(90.f, 30.f, 90.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
+	vecObjects.push_back(pObject1);
+
 	//Castle Pillar3
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
@@ -483,12 +491,28 @@ void CreateObjects()
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
 
+	//Castle Pillar3's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(90.f, 30.f, 10.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
+	vecObjects.push_back(pObject1);
+
 	//Castle Pillar4
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(10.f, 15.f, 10.f);
 	pObject1->SetScale(5.f, 30.f, 5.f);
+	vecObjects.push_back(pObject1);
+
+	//Castle Pillar4's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(10.f, 30.f, 10.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
 	vecObjects.push_back(pObject1);
 
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
