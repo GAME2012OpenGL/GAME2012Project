@@ -45,7 +45,6 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	pCylinder->CreateMesh();
 	m_vecMeshes.push_back(pCylinder);
 
-
 	//Create Upper roof
 	UpperRoof* pURoof = new UpperRoof;
 	pURoof->CreateMesh();

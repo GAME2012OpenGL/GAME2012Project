@@ -120,6 +120,7 @@ PointLight pLight2(glm::vec3(90.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 
 void CreateTextures();
 void CreateObjects();
+void CreateWatchTower();
 
 void init(void)
 {
@@ -201,6 +202,7 @@ void init(void)
 
 	/////////////////////////////////Create Objects///////////////////////////////
 	CreateObjects();
+	CreateWatchTower();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -409,6 +411,8 @@ void CreateTextures()
 	TextureManager::CreateTexture("../Texture/Window.png", "Window", SOIL_LOAD_RGBA);
 	TextureManager::CreateTexture("../Texture/Grass.jpg", "Grass", SOIL_LOAD_RGB);
 	TextureManager::CreateTexture("../Texture/Wall.jpg", "Wall", SOIL_LOAD_RGB);
+	TextureManager::CreateTexture("../Texture/Wood.jpg", "Wood", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/RoofTile.jpg", "Giwa", SOIL_LOAD_RGBA);
 }
 
 void CreateObjects()
@@ -462,7 +466,7 @@ void CreateObjects()
 	pObject1->SetPosition(90.f, 15.f, 90.f);
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
-
+	
 	//Castle Pillar3
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
@@ -470,7 +474,7 @@ void CreateObjects()
 	pObject1->SetPosition(90.f, 15.f, 10.f);
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
-
+	
 	//Castle Pillar4
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
@@ -492,45 +496,92 @@ void CreateObjects()
 	pObject1->SetScale(100.f, 1.f, 100.f);
 	vecObjects.push_back(pObject1);
 	
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(15.f, 2.f, 15.f);
-	vecObjects.push_back(pObject1);
-
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(20.f, 2.f, 20.f);
-	vecObjects.push_back(pObject1);
-
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_SANDWICH));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(15.f, 5.f, 15.f);
-	vecObjects.push_back(pObject1);
-
+	//pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	//pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
+	//pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	//pObject1->SetPosition(15.f, 2.f, 15.f);
+	//vecObjects.push_back(pObject1);
+	//
+	//pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	//pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	//pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	//pObject1->SetPosition(20.f, 2.f, 20.f);
+	//vecObjects.push_back(pObject1);
+	//
+	//pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	//pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_SANDWICH));
+	//pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	//pObject1->SetPosition(15.f, 5.f, 15.f);
+	//vecObjects.push_back(pObject1);
+	//
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_RHOMBUS));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetTexture(TextureManager::GetTexture("Castle"));
 	pObject1->SetPosition(15.f, 8.f, 15.f);
 	vecObjects.push_back(pObject1);
-
+	
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetTexture(TextureManager::GetTexture("Wood"));
 	pObject1->SetPosition(30.f, 10.f, 30.f);
 	vecObjects.push_back(pObject1);
 
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_UPPERROOF));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(45.f, 10.f, 45.f);
+	pObject1->SetTexture(TextureManager::GetTexture("Giwa"));
+	pObject1->SetPosition(40.f, 10.f, 40.f);
 	vecObjects.push_back(pObject1);
 
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(60.f, 10.f, 60.f);
+	vecObjects.push_back(pObject1);
+}
+
+void CreateWatchTower()
+{
+	Object* pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+
+	for (int j = 40; j <= 45; j+= 5)
+	{
+		for (int i = 35; i < 55; i += 5)
+		{
+			//Pillar
+			pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+			pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+			pObject1->SetTexture(TextureManager::GetTexture("Wood"));
+			pObject1->SetPosition(i, 18.f, j);
+			pObject1->SetScale(0.3f, 5.5f, 0.3f);
+			vecObjects.push_back(pObject1);
+		}
+	}
+
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject1->SetTexture(TextureManager::GetTexture("Giwa"));
+	pObject1->SetPosition(42.5f, 22.5f, 42.5f);
+	pObject1->SetScale(10.f, 2.f, 5.f);
+	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wood"));
+	pObject1->SetPosition(42.5f, 24.3f, 42.5f);
+	pObject1->SetScale(5.f, 1.3f, 2.5f);
+	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject1->SetTexture(TextureManager::GetTexture("Giwa"));
+	pObject1->SetPosition(42.5f, 26.5f, 42.5f);
+	pObject1->SetScale(8.f, 1.3f, 4.5f);
+	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_UPPERROOF));
+	pObject1->SetTexture(TextureManager::GetTexture("Giwa"));
+	pObject1->SetPosition(42.5f, 27.f, 42.5f);
+	pObject1->SetScale(2.02f, 2.f, 1.1f);
 	vecObjects.push_back(pObject1);
 }
