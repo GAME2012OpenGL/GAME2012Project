@@ -55,7 +55,7 @@ bool bWireFrameMode = false;
 
 Camera camera(glm::vec3(50.f, 10.f, 200.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 40.f, 0.5f);
 
-float WatchTowerHeight = 21.5f;
+float WatchTowerHeight = 26.5f;
 
 float WallThickness = 4.f;
 
@@ -129,7 +129,7 @@ PointLight pLight3(glm::vec3(80.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 void CreateTextures();
 void CreateObjects();
 void CreateWatchTower(float = 0.f, float = 0.f, float = 0.f);
-void CreateSoldier();
+void CreateSoldier(float X, float Y, float Z);
 void CreateBlendObjects();
 void CreateStair();
 
@@ -224,7 +224,7 @@ void init(void)
 	CreateWatchTower(90.f, 50.f, 90.f);
 	CreateWatchTower(50.f, 10.f);
 	CreateWatchTower(10.f, 50.f, 90.f);
-	CreateSoldier();
+	CreateSoldier(0.f, 0.f, 0.f);
 	CreateStair();
 
 	//Objects using blend(should be always last)
@@ -601,8 +601,8 @@ void CreateWatchTower(float lx, float lz, float angle)
 				pObject2 = new Object(uniformModel, uniformShininess, 1.f);
 				pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 				pObject2->SetTexture(TextureManager::GetTexture("Wood"));
-				pObject2->SetPosition(pillar_x, WatchTowerHeight, pillar_z);
-				pObject2->SetScale(0.3f, 4.5f, 0.3f);
+				pObject2->SetPosition(pillar_x, WatchTowerHeight - 2.f, pillar_z);
+				pObject2->SetScale(0.3f, 9.5f, 0.3f);
 				vecObjects.push_back(pObject2);
 			}
 		}
@@ -624,8 +624,8 @@ void CreateWatchTower(float lx, float lz, float angle)
 				pObject2 = new Object(uniformModel, uniformShininess, 1.f);
 				pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 				pObject2->SetTexture(TextureManager::GetTexture("Wood"));
-				pObject2->SetPosition(pillar_x, WatchTowerHeight, pillar_z);
-				pObject2->SetScale(0.3f, 5.5f, 0.3f);
+				pObject2->SetPosition(pillar_x, WatchTowerHeight - 2.f, pillar_z);
+				pObject2->SetScale(0.3f, 9.5f, 0.3f);
 				vecObjects.push_back(pObject2);
 			}
 		}
@@ -664,7 +664,7 @@ void CreateWatchTower(float lx, float lz, float angle)
 	vecObjects.push_back(pObject2);
 }
 
-void CreateSoldier()
+void CreateSoldier(float X, float Y, float Z)
 {
 	// 1st soldier
 	//Head
@@ -773,6 +773,9 @@ void CreateSoldier()
 	pObject3->SetPosition(29.1f, 25.2f, 91.f);
 	pObject3->SetScale(0.1f, 0.2f, 0.1f);
 	vecObjects.push_back(pObject3);
+
+
+
 
 	// 2nd soldier
 	//Head
