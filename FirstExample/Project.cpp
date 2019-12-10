@@ -126,6 +126,7 @@ PointLight pLight3(glm::vec3(80.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 void CreateTextures();
 void CreateObjects();
 void CreateWatchTower(float = 0.f, float = 0.f, float = 0.f);
+void CreateSoldier();
 
 void init(void)
 {
@@ -218,6 +219,7 @@ void init(void)
 	CreateWatchTower(90.f, 50.f, 90.f);
 	CreateWatchTower(50.f, 10.f);
 	CreateWatchTower(10.f, 50.f, 90.f);
+	CreateSoldier();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -425,6 +427,9 @@ void CreateTextures()
 	TextureManager::CreateTexture("../Texture/Wood.jpg", "Wood", SOIL_LOAD_RGBA);
 	TextureManager::CreateTexture("../Texture/RoofTile.jpg", "Giwa", SOIL_LOAD_RGBA);
 	TextureManager::CreateTexture("../Texture/Door.jpg", "Door", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/color.jpg", "color", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/armour.jpg", "armour", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/Metal.jpg", "Metal", SOIL_LOAD_RGBA);
 }
 
 void CreateObjects()
@@ -665,4 +670,114 @@ void CreateWatchTower(float lx, float lz, float angle)
 	pObject2->SetRotation(0.f, 1.f, 0.f, angle);
 	pObject2->SetScale(2.02f, 2.f, 1.1f);
 	vecObjects.push_back(pObject2);
+}
+
+void CreateSoldier()
+{
+	//Head
+	Object* pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("color"));
+	pObject3->SetPosition(50.f, 30.f, 50.f);
+	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
+	pObject3->SetScale(0.5f, 0.5f, 0.5f);
+	vecObjects.push_back(pObject3);
+
+	//Shoulder
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(50.f, 29.45f, 50.f);
+	pObject3->SetScale(0.75f, 0.3f, 0.5f);
+	vecObjects.push_back(pObject3);
+
+	//body
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(50.f, 28.5f, 50.f);
+	pObject3->SetScale(0.75f, 0.7f, 0.48f);
+	vecObjects.push_back(pObject3);
+
+	//Pelvis
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(50.f, 27.5f, 50.f);
+	pObject3->SetRotation(1.f, 0.f, 0.f, 180.f);
+	pObject3->SetScale(0.75f, 0.3f, 0.5f);
+	vecObjects.push_back(pObject3);
+
+	//Right Thigh
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(49.5f, 27.f, 50.f);
+	pObject3->SetScale(0.35f, 1.5f, 0.35f);
+	vecObjects.push_back(pObject3);
+
+	//Left Thigh
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(50.5f, 27.f, 50.f);
+	pObject3->SetScale(0.35f, 1.5f, 0.35f);
+	vecObjects.push_back(pObject3);
+
+	// Right calf
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(49.5f, 25.5f, 50.f);
+	pObject3->SetScale(0.35f, 1.5f, 0.35f);
+	vecObjects.push_back(pObject3);
+
+	//Left calf
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(50.5f, 25.5f, 50.f);
+	pObject3->SetScale(0.35f, 1.5f, 0.35f);
+	vecObjects.push_back(pObject3);
+
+	//Left arm
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(50.9f, 28.35f, 50.f);
+	pObject3->SetScale(0.2f, 1.8f, 0.2f);
+	vecObjects.push_back(pObject3);
+
+	//Right upper arm
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(49.1f, 28.35f, 50.f);
+	pObject3->SetScale(0.2f, 0.8f, 0.2f);
+	vecObjects.push_back(pObject3);
+
+	//Right lower arm
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("armour"));
+	pObject3->SetPosition(49.1f, 27.8f, 50.5f);
+	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
+	pObject3->SetScale(0.2f, 1.f, 0.2f);
+	vecObjects.push_back(pObject3);
+
+	//spear body
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+	pObject3->SetTexture(TextureManager::GetTexture("Wood"));
+	pObject3->SetPosition(49.1f, 27.8f, 51.f);
+	pObject3->SetScale(0.05f, 5.f, 0.05f);
+	vecObjects.push_back(pObject3);
+
+	//spear tip
+	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
+	pObject3->SetTexture(TextureManager::GetTexture("Metal"));
+	pObject3->SetPosition(49.1f, 30.f, 51.f);
+	pObject3->SetScale(0.1f, 0.2f, 0.1f);
+	vecObjects.push_back(pObject3);
 }
