@@ -8,7 +8,7 @@ class Mesh;
 
 class Object
 {
-private :
+protected :
 	Mesh* m_pMesh;
 	GLuint m_iTexture;
 
@@ -28,7 +28,7 @@ public :
 	~Object();
 
 	void Update();
-	void Render();
+	virtual void Render();
 	void Clear();
 
 

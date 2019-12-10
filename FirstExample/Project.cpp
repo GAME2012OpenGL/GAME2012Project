@@ -26,6 +26,7 @@ using namespace std;
 #include "Mesh.h"
 #include "Cube.h"
 #include "Pyramid.h"
+#include "Fence.h"
 
 #define X_AXIS glm::vec3(1,0,0)
 #define Y_AXIS glm::vec3(0,1,0)
@@ -52,7 +53,7 @@ vector<Object*> vecObjects;
 
 bool bWireFrameMode = false;
 
-Camera camera(glm::vec3(30.f, 10.f, 100.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 20.f, 0.5f);
+Camera camera(glm::vec3(50.f, 10.f, 200.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 40.f, 0.5f);
 
 float WatchTowerHeight = 21.5f;
 
@@ -127,6 +128,7 @@ void CreateTextures();
 void CreateObjects();
 void CreateWatchTower(float = 0.f, float = 0.f, float = 0.f);
 void CreateSoldier();
+void CreateBlendObjects();
 
 void init(void)
 {
@@ -220,9 +222,19 @@ void init(void)
 	CreateWatchTower(50.f, 10.f);
 	CreateWatchTower(10.f, 50.f, 90.f);
 	CreateSoldier();
+
+	//Objects using blend(should be always last)
+	CreateBlendObjects();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+	//Enable culling
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 
 	// Enable depth test.
 	glEnable(GL_DEPTH_TEST);
@@ -264,30 +276,7 @@ void display(void)
 	
 
 	for(int i =0 ; i < vecObjects.size(); ++i)
-		vecObjects[i]->Render();	
-	
-
-	/*glEnable(GL_BLEND);
-	glDisable(GL_CULL_FACE);
-	glBindTexture(GL_TEXTURE_2D, iFence_tex);
-	glBindVertexArray(vao);
-	transformObject(glm::vec3(1.2f, 1.2f, 1.2f), Y_AXIS, fAngle, glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, iNumOfCubeIndices, GL_UNSIGNED_SHORT, 0);
-	glEnable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
-
-
-	glEnable(GL_BLEND);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	glBindTexture(GL_TEXTURE_2D, iWindow_tex);
-	glBindVertexArray(pyramid_vao);
-	transformObject(glm::vec3(1.f, 1.f, 1.f), Y_AXIS, 0, glm::vec3(0.0f, -1.0f, 3.0f));
-	glDrawElements(GL_TRIANGLES, iNumOfPyramidIndices, GL_UNSIGNED_SHORT, 0);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glDisable(GL_BLEND);*/
-
+		vecObjects[i]->Render();
 
 
 	glutSwapBuffers(); // Instead of double buffering.
@@ -402,11 +391,7 @@ int main(int argc, char** argv)
 	glutKeyboardUpFunc(keyUp);
 	glutMouseFunc(mouseDown);
 	glutPassiveMotionFunc(mouseMove); // or...
-	//glutMotionFunc(mouseMove); // Requires click to register.
-
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
+	//glutMotionFunc(mouseMove); // Requires click to register.;
 
 
 
@@ -434,8 +419,16 @@ void CreateTextures()
 
 void CreateObjects()
 {
-	//Front wall
+	//Ground
 	Object* pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
+	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
+	pObject1->SetPosition(-25.f, 0.f, -25.f);
+	pObject1->SetScale(150.f, 1.f, 150.f);
+	vecObjects.push_back(pObject1);
+
+	//Front wall
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(50.f, 10.f, 90.f);
@@ -538,12 +531,7 @@ void CreateObjects()
 	pObject1->SetPosition(10.f, 2.f, 10.f);
 	vecObjects.push_back(pObject1);
 	
-	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
-	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
-	pObject1->SetPosition(0.f, 0.f, 0.f);
-	pObject1->SetScale(100.f, 1.f, 100.f);
-	vecObjects.push_back(pObject1);
+	
 	
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
@@ -780,4 +768,55 @@ void CreateSoldier()
 	pObject3->SetPosition(49.1f, 30.f, 51.f);
 	pObject3->SetScale(0.1f, 0.2f, 0.1f);
 	vecObjects.push_back(pObject3);
+}
+
+void CreateBlendObjects()
+{
+	//Back Fence
+	for (int i = 0; i < 5; ++i)
+	{
+		Object* pObject = new Fence(uniformModel, uniformShininess, 1.f);
+		pObject->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+		pObject->SetTexture(TextureManager::GetTexture("Fence"));
+		pObject->SetPosition(-10.f + (i * 30), 4.f, -23.f);
+		pObject->SetRotation(0.f, 1.f, 0.f, 0.f);
+		pObject->SetScale(15.f, 4.f, 2.f);
+		vecObjects.push_back(pObject);
+	}
+
+	//Left Fence
+	for (int i = 0; i < 5; ++i)
+	{
+		Object* pObject = new Fence(uniformModel, uniformShininess, 1.f);
+		pObject->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+		pObject->SetTexture(TextureManager::GetTexture("Fence"));
+		pObject->SetPosition(-23.f, 4.f, -10.f + (i * 30));
+		pObject->SetRotation(0.f, 1.f, 0.f, 90.f);
+		pObject->SetScale(15.f, 4.f, 2.f);
+		vecObjects.push_back(pObject);
+	}
+
+	//Right Fence
+	for (int i = 0; i < 5; ++i)
+	{
+		Object* pObject = new Fence(uniformModel, uniformShininess, 1.f);
+		pObject->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+		pObject->SetTexture(TextureManager::GetTexture("Fence"));
+		pObject->SetPosition(123.f, 4.f, -10.f + (i * 30));
+		pObject->SetRotation(0.f, 1.f, 0.f, 90.f);
+		pObject->SetScale(15.f, 4.f, 2.f);
+		vecObjects.push_back(pObject);
+	}
+
+	//Front Fence
+	for (int i = 0; i < 5; ++i)
+	{
+		Object* pObject = new Fence(uniformModel, uniformShininess, 1.f);
+		pObject->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+		pObject->SetTexture(TextureManager::GetTexture("Fence"));
+		pObject->SetPosition(-10.f + (i * 30), 4.f, 123.f);
+		pObject->SetRotation(0.f, 1.f, 0.f, 0.f);
+		pObject->SetScale(15.f, 4.f, 2.f);
+		vecObjects.push_back(pObject);
+	}
 }
