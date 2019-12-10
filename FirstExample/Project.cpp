@@ -37,8 +37,6 @@ using namespace std;
 GLuint uniformModel = 0;
 GLuint uniformView = 0;
 GLuint uniformProj = 0;
-GLuint uniformLightPos = 0;
-GLuint uniformLightPos2 = 0;
 GLuint uniformEyePos = 0;
 GLuint uniformShininess = 0;
 
@@ -55,6 +53,10 @@ vector<Object*> vecObjects;
 bool bWireFrameMode = false;
 
 Camera camera(glm::vec3(30.f, 10.f, 100.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 20.f, 0.5f);
+
+float WatchTowerHeight = 23.f;
+
+float WallThickness = 4.f;
 
 
 struct Light
@@ -112,14 +114,18 @@ DirLight dirLight(glm::vec3(1.f, -1.f, -1.f),
 				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
 //50 range
-PointLight pLight(glm::vec3(50.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+PointLight pLight(glm::vec3(20.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(1.f, 0.f, 0.f), 1.f, 1.f);
 
-PointLight pLight2(glm::vec3(90.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+PointLight pLight2(glm::vec3(50.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(0.f, 1.f, 0.f), 1.f, 1.f);
+
+PointLight pLight3(glm::vec3(80.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+	0.2f, glm::vec3(0.f, 0.f, 1.f), 1.f, 1.f);
 
 void CreateTextures();
 void CreateObjects();
+void CreateWatchTower(float = 0.f, float = 0.f,float = 0.f, float = 0.f);
 
 void init(void)
 {
@@ -163,8 +169,6 @@ void init(void)
 	glUniform1f(glGetUniformLocation(program, "pLight[0].linear"), pLight.linear);
 	glUniform1f(glGetUniformLocation(program, "pLight[0].exponent"), pLight.exponent);
 
-	uniformLightPos = glGetUniformLocation(program, "pLight[0].position");
-
 	//Set light2
 	glUniform1f(glGetUniformLocation(program, "pLight[1].base.ambientStrength"), pLight2.ambientStrength);
 	glUniform3f(glGetUniformLocation(program, "pLight[1].base.diffuseColor"), pLight2.diffuseColor.x, pLight2.diffuseColor.y, pLight2.diffuseColor.z);
@@ -176,7 +180,16 @@ void init(void)
 	glUniform1f(glGetUniformLocation(program, "pLight[1].linear"), pLight2.linear);
 	glUniform1f(glGetUniformLocation(program, "pLight[1].exponent"), pLight2.exponent);
 
-	uniformLightPos2 = glGetUniformLocation(program, "pLight[1].position");
+	//Set light3
+	glUniform1f(glGetUniformLocation(program, "pLight[2].base.ambientStrength"), pLight3.ambientStrength);
+	glUniform3f(glGetUniformLocation(program, "pLight[2].base.diffuseColor"), pLight3.diffuseColor.x, pLight3.diffuseColor.y, pLight3.diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].base.diffuseStrength"), pLight3.diffuseStrength);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].base.specularStrength"), pLight3.specularStrength);
+
+	glUniform3f(glGetUniformLocation(program, "pLight[2].position"), pLight3.position.x, pLight3.position.y, pLight3.position.z);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].constant"), pLight3.constant);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].linear"), pLight3.linear);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].exponent"), pLight3.exponent);
 
 	//Get Eye position location
 	uniformEyePos = glGetUniformLocation(program, "eyePos");
@@ -201,6 +214,8 @@ void init(void)
 
 	/////////////////////////////////Create Objects///////////////////////////////
 	CreateObjects();
+	CreateWatchTower(0.f,0.f,0.f,0.f);
+	CreateWatchTower(0.f, 1.f, 0.f, 90.f);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -230,10 +245,6 @@ void display(void)
 	//Set projection and view matrix in shader
 	glUniformMatrix4fv(uniformProj, 1, GL_FALSE, &projection[0][0]);
 	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.CalculateViewMatrix()));
-
-	//Set light position
-	glUniform3f(uniformLightPos, pLight.position.x, pLight.position.y, pLight.position.z);
-	glUniform3f(uniformLightPos2, pLight2.position.x, pLight2.position.y, pLight2.position.z);
 
 	//Set eye position
 	glm::vec3 cameraPos = camera.GetCameraPosition();
@@ -409,6 +420,8 @@ void CreateTextures()
 	TextureManager::CreateTexture("../Texture/Window.png", "Window", SOIL_LOAD_RGBA);
 	TextureManager::CreateTexture("../Texture/Grass.jpg", "Grass", SOIL_LOAD_RGB);
 	TextureManager::CreateTexture("../Texture/Wall.jpg", "Wall", SOIL_LOAD_RGB);
+	TextureManager::CreateTexture("../Texture/Wood.jpg", "Wood", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/RoofTile.jpg", "Giwa", SOIL_LOAD_RGBA);
 }
 
 void CreateObjects()
@@ -418,41 +431,49 @@ void CreateObjects()
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(50.f, 10.f, 90.f);
-	pObject1->SetScale(38.f, 10.f, 2.f);
+	pObject1->SetScale(38.f, 10.f, WallThickness);
 	vecObjects.push_back(pObject1);
-
+	
 	//Right wall
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(90.f, 10.f, 50.f);
 	pObject1->SetRotation(0.f, 1.f, 0.f, 90.f);
-	pObject1->SetScale(42.f, 10.f, 2.f);
+	pObject1->SetScale(42.f, 10.f, WallThickness);
 	vecObjects.push_back(pObject1);
-
+	
 	//Left wall
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(10.f, 10.f, 50.f);
 	pObject1->SetRotation(0.f, 1.f, 0.f, 90.f);
-	pObject1->SetScale(42.f, 10.f, 2.f);
+	pObject1->SetScale(42.f, 10.f, WallThickness);
 	vecObjects.push_back(pObject1);
-
+	
 	//Back wall
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(50.f, 10.f, 10.f);
-	pObject1->SetScale(38.f, 10.f, 2.f);
+	pObject1->SetScale(38.f, 10.f, WallThickness);
 	vecObjects.push_back(pObject1);
-
+	
 	//Castle Pillar1
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(10.f, 15.f, 90.f);
 	pObject1->SetScale(5.f, 30.f, 5.f);
+	vecObjects.push_back(pObject1);
+
+	//Castle Pillar1's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(10.f, 30.f, 90.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
 	vecObjects.push_back(pObject1);
 
 	//Castle Pillar2
@@ -463,12 +484,28 @@ void CreateObjects()
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
 
+	//Castle Pillar2's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(90.f, 30.f, 90.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
+	vecObjects.push_back(pObject1);
+
 	//Castle Pillar3
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
 	pObject1->SetPosition(90.f, 15.f, 10.f);
 	pObject1->SetScale(5.f, 30.f, 5.f);
+	vecObjects.push_back(pObject1);
+
+	//Castle Pillar3's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(90.f, 30.f, 10.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
 	vecObjects.push_back(pObject1);
 
 	//Castle Pillar4
@@ -479,21 +516,27 @@ void CreateObjects()
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
 
-
+	//Castle Pillar4's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(10.f, 30.f, 10.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
+	vecObjects.push_back(pObject1);
 
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(10.f, 2.f, 10.f);
 	vecObjects.push_back(pObject1);
-
+	
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PLANE));
 	pObject1->SetTexture(TextureManager::GetTexture("Grass"));
 	pObject1->SetPosition(0.f, 0.f, 0.f);
 	pObject1->SetScale(100.f, 1.f, 100.f);
 	vecObjects.push_back(pObject1);
-
+	
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
@@ -519,10 +562,72 @@ void CreateObjects()
 	vecObjects.push_back(pObject1);
 
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_SPEARTIP));
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(30.f, 10.f, 30.f);
 	vecObjects.push_back(pObject1);
 
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_UPPERROOF));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetPosition(45.f, 10.f, 45.f);
+	vecObjects.push_back(pObject1);
 
+	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
+	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetPosition(60.f, 10.f, 60.f);
+	vecObjects.push_back(pObject1);
+}
+
+void CreateWatchTower(float x, float y, float z, float angle)
+{
+	Object* pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+
+	for (float j = 87.5; j <= 92.5; j += 5.f)
+	{
+		for (float i = 42.5; i <= 57.5; i += 5.f)
+		{
+			//Pillar
+			pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+			pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+			pObject2->SetTexture(TextureManager::GetTexture("Wood"));
+			pObject2->SetPosition(i, WatchTowerHeight, j);
+			pObject2->SetRotation(x, y, z, angle);
+			pObject2->SetScale(0.3f, 5.5f, 0.3f);
+			vecObjects.push_back(pObject2);
+		}
+	}
+
+	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject2->SetTexture(TextureManager::GetTexture("Giwa"));
+	pObject2->SetPosition(50.f, WatchTowerHeight + 4.5f, 90.f);
+	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetScale(10.f, 2.f, 5.f);
+	vecObjects.push_back(pObject2);
+
+	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	pObject2->SetTexture(TextureManager::GetTexture("Wood"));
+	pObject2->SetPosition(50.f, WatchTowerHeight + 6.3f, 90.f);
+	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetScale(5.f, 1.3f, 2.5f);
+	vecObjects.push_back(pObject2);
+
+	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
+	pObject2->SetTexture(TextureManager::GetTexture("Giwa"));
+	pObject2->SetPosition(50.f, WatchTowerHeight+8.5f, 90.f);
+	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetScale(8.f, 1.3f, 4.5f);
+	vecObjects.push_back(pObject2);
+
+	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_UPPERROOF));
+	pObject2->SetTexture(TextureManager::GetTexture("Giwa"));
+	pObject2->SetPosition(50.f, WatchTowerHeight + 9.f, 90.f);
+	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetScale(2.02f, 2.f, 1.1f);
+	vecObjects.push_back(pObject2);
 }

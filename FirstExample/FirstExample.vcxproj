@@ -14,7 +14,7 @@
     <ProjectGuid>{9D6F1153-43EA-469E-8758-A4991B679878}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>FirstExample</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -86,8 +86,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cone.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="Trapezoid.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -98,8 +100,9 @@
     <ClCompile Include="Pyramid_kindof.cpp" />
     <ClCompile Include="Rhombus.cpp" />
     <ClCompile Include="Sandwich.cpp" />
-    <ClCompile Include="SpearTip.cpp" />
+    <ClCompile Include="Octahedron.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="UpperRoof.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="triangles.frag" />
@@ -108,8 +111,10 @@
   <ItemGroup>
     <ClInclude Include="..\include\LoadShaders.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cone.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="Trapezoid.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
@@ -118,8 +123,9 @@
     <ClInclude Include="Pyramid_kindof.h" />
     <ClInclude Include="Rhombus.h" />
     <ClInclude Include="Sandwich.h" />
-    <ClInclude Include="SpearTip.h" />
+    <ClInclude Include="Octahedron.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="UpperRoof.h" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Debug\LoadShaders.obj" />

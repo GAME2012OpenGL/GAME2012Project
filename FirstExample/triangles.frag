@@ -38,7 +38,7 @@ uniform sampler2D texture0;
 
 uniform DirLight dirLight;
 
-#define NR_POINT_LIGHTS 2
+#define NR_POINT_LIGHTS 3
 uniform PointLight pLight[NR_POINT_LIGHTS];
 
 uniform vec3 eyePos;
