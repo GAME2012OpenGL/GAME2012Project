@@ -37,8 +37,6 @@ using namespace std;
 GLuint uniformModel = 0;
 GLuint uniformView = 0;
 GLuint uniformProj = 0;
-GLuint uniformLightPos = 0;
-GLuint uniformLightPos2 = 0;
 GLuint uniformEyePos = 0;
 GLuint uniformShininess = 0;
 
@@ -112,11 +110,14 @@ DirLight dirLight(glm::vec3(1.f, -1.f, -1.f),
 				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
 //50 range
-PointLight pLight(glm::vec3(50.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+PointLight pLight(glm::vec3(20.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(1.f, 0.f, 0.f), 1.f, 1.f);
 
-PointLight pLight2(glm::vec3(90.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+PointLight pLight2(glm::vec3(50.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(0.f, 1.f, 0.f), 1.f, 1.f);
+
+PointLight pLight3(glm::vec3(80.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+	0.2f, glm::vec3(0.f, 0.f, 1.f), 1.f, 1.f);
 
 void CreateTextures();
 void CreateObjects();
@@ -163,8 +164,6 @@ void init(void)
 	glUniform1f(glGetUniformLocation(program, "pLight[0].linear"), pLight.linear);
 	glUniform1f(glGetUniformLocation(program, "pLight[0].exponent"), pLight.exponent);
 
-	uniformLightPos = glGetUniformLocation(program, "pLight[0].position");
-
 	//Set light2
 	glUniform1f(glGetUniformLocation(program, "pLight[1].base.ambientStrength"), pLight2.ambientStrength);
 	glUniform3f(glGetUniformLocation(program, "pLight[1].base.diffuseColor"), pLight2.diffuseColor.x, pLight2.diffuseColor.y, pLight2.diffuseColor.z);
@@ -176,7 +175,16 @@ void init(void)
 	glUniform1f(glGetUniformLocation(program, "pLight[1].linear"), pLight2.linear);
 	glUniform1f(glGetUniformLocation(program, "pLight[1].exponent"), pLight2.exponent);
 
-	uniformLightPos2 = glGetUniformLocation(program, "pLight[1].position");
+	//Set light3
+	glUniform1f(glGetUniformLocation(program, "pLight[2].base.ambientStrength"), pLight3.ambientStrength);
+	glUniform3f(glGetUniformLocation(program, "pLight[2].base.diffuseColor"), pLight3.diffuseColor.x, pLight3.diffuseColor.y, pLight3.diffuseColor.z);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].base.diffuseStrength"), pLight3.diffuseStrength);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].base.specularStrength"), pLight3.specularStrength);
+
+	glUniform3f(glGetUniformLocation(program, "pLight[2].position"), pLight3.position.x, pLight3.position.y, pLight3.position.z);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].constant"), pLight3.constant);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].linear"), pLight3.linear);
+	glUniform1f(glGetUniformLocation(program, "pLight[2].exponent"), pLight3.exponent);
 
 	//Get Eye position location
 	uniformEyePos = glGetUniformLocation(program, "eyePos");
@@ -230,10 +238,6 @@ void display(void)
 	//Set projection and view matrix in shader
 	glUniformMatrix4fv(uniformProj, 1, GL_FALSE, &projection[0][0]);
 	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.CalculateViewMatrix()));
-
-	//Set light position
-	glUniform3f(uniformLightPos, pLight.position.x, pLight.position.y, pLight.position.z);
-	glUniform3f(uniformLightPos2, pLight2.position.x, pLight2.position.y, pLight2.position.z);
 
 	//Set eye position
 	glm::vec3 cameraPos = camera.GetCameraPosition();
@@ -455,6 +459,14 @@ void CreateObjects()
 	pObject1->SetScale(5.f, 30.f, 5.f);
 	vecObjects.push_back(pObject1);
 
+	//Castle Pillar1's Roof
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CONE));
+	pObject1->SetTexture(TextureManager::GetTexture("Wall"));
+	pObject1->SetPosition(10.f, 30.f, 90.f);
+	pObject1->SetScale(5.f, 10.f, 5.f);
+	vecObjects.push_back(pObject1);
+
 	//Castle Pillar2
 	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
@@ -533,4 +545,7 @@ void CreateObjects()
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(60.f, 10.f, 60.f);
 	vecObjects.push_back(pObject1);
+
+
+	
 }

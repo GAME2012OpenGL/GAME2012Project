@@ -10,6 +10,7 @@
 #include "Octahedron.h"
 #include "UpperRoof.h"
 #include "Trapezoid.h"
+#include "Cone.h"
 
 std::vector<Mesh*> GeometryGenerator::m_vecMeshes;
 
@@ -62,6 +63,10 @@ void GeometryGenerator::GenerateMeshes(int iNumOfPlaneGrid)
 	Trapezoid* pTrapezoid = new Trapezoid;
 	pTrapezoid->CreateMesh();
 	m_vecMeshes.push_back(pTrapezoid);
+
+	Cone* pCone = new Cone;
+	pCone->CreateMesh();
+	m_vecMeshes.push_back(pCone);
 
 }
 
