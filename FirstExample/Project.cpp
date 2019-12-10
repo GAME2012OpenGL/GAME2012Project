@@ -61,6 +61,8 @@ float WallThickness = 4.f;
 
 float StairThickness = 2.f;
 
+float FootToTheGround = 18.7f;
+
 
 struct Light
 {
@@ -224,7 +226,7 @@ void init(void)
 	CreateWatchTower(90.f, 50.f, 90.f);
 	CreateWatchTower(50.f, 10.f);
 	CreateWatchTower(10.f, 50.f, 90.f);
-	CreateSoldier(0.f, 0.f, 0.f);
+	CreateSoldier(30.f, 20.f, 90.f);
 	CreateStair();
 
 	//Objects using blend(should be always last)
@@ -666,13 +668,14 @@ void CreateWatchTower(float lx, float lz, float angle)
 
 void CreateSoldier(float X, float Y, float Z)
 {
+	float rightHeight = Y - FootToTheGround;
 	// 1st soldier
 	//Head
 	Object* pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("color"));
-	pObject3->SetPosition(30.f, 25.2f, 90.f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
+	pObject3->SetPosition(X, 25.2f +rightHeight, Z);
+	pObject3->SetRotation(1.f, 0.f, 0.f, Z);
 	pObject3->SetScale(0.5f, 0.5f, 0.5f);
 	vecObjects.push_back(pObject3);
 
@@ -680,7 +683,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(30.f, 23.65f, 90.f);
+	pObject3->SetPosition(X, 23.65f + rightHeight, Z);
 	pObject3->SetScale(0.75f, 0.3f, 0.5f);
 	vecObjects.push_back(pObject3);
 
@@ -688,7 +691,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(30.f, 23.7f, 90.f);
+	pObject3->SetPosition(X, 23.7f+rightHeight, Z);
 	pObject3->SetScale(0.75f, 0.7f, 0.48f);
 	vecObjects.push_back(pObject3);
 
@@ -696,7 +699,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(30.f, 22.7f, 90.f);
+	pObject3->SetPosition(X, 22.7f + rightHeight, Z);
 	pObject3->SetRotation(1.f, 0.f, 0.f, 180.f);
 	pObject3->SetScale(0.75f, 0.3f, 0.5f);
 	vecObjects.push_back(pObject3);
@@ -705,7 +708,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(29.5f, 22.2f, 90.f);
+	pObject3->SetPosition(X-0.5f, 22.2f + rightHeight, Z);
 	pObject3->SetScale(0.35f, 1.5f, 0.35f);
 	vecObjects.push_back(pObject3);
 
@@ -713,7 +716,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(30.5f, 22.2f, 90.f);
+	pObject3->SetPosition(X+0.5f, 22.2f + rightHeight, Z);
 	pObject3->SetScale(0.35f, 1.5f, 0.35f);
 	vecObjects.push_back(pObject3);
 
@@ -721,7 +724,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(29.5f, 20.7f, 90.f);
+	pObject3->SetPosition(X-0.5f, 20.7f + rightHeight, Z);
 	pObject3->SetScale(0.35f, 1.5f, 0.35f);
 	vecObjects.push_back(pObject3);
 
@@ -729,7 +732,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(30.5f, 20.7f, 90.f);
+	pObject3->SetPosition(X+0.5f, 20.7f + rightHeight, Z);
 	pObject3->SetScale(0.35f, 1.5f, 0.35f);
 	vecObjects.push_back(pObject3);
 
@@ -737,7 +740,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(30.9f, 23.55f, 90.f);
+	pObject3->SetPosition(X+0.9f, 23.55f + rightHeight, Z);
 	pObject3->SetScale(0.2f, 1.8f, 0.2f);
 	vecObjects.push_back(pObject3);
 
@@ -745,7 +748,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(29.1f, 23.55f, 90.f);
+	pObject3->SetPosition(X-0.9f, 23.55f + rightHeight, Z);
 	pObject3->SetScale(0.2f, 0.8f, 0.2f);
 	vecObjects.push_back(pObject3);
 
@@ -753,8 +756,8 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(29.1f, 23.f, 90.5f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
+	pObject3->SetPosition(X - 0.9f, 23.f + rightHeight, Z+0.5f);
+	pObject3->SetRotation(1.f, 0.f, 0.f, Z);
 	pObject3->SetScale(0.2f, 1.f, 0.2f);
 	vecObjects.push_back(pObject3);
 
@@ -762,7 +765,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
 	pObject3->SetTexture(TextureManager::GetTexture("Wood"));
-	pObject3->SetPosition(29.1f, 23.f, 91.f);
+	pObject3->SetPosition(X - 0.9f, 23.f + rightHeight, Z+1.f);
 	pObject3->SetScale(0.05f, 5.f, 0.05f);
 	vecObjects.push_back(pObject3);
 
@@ -770,226 +773,7 @@ void CreateSoldier(float X, float Y, float Z)
 	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
 	pObject3->SetTexture(TextureManager::GetTexture("Metal"));
-	pObject3->SetPosition(29.1f, 25.2f, 91.f);
-	pObject3->SetScale(0.1f, 0.2f, 0.1f);
-	vecObjects.push_back(pObject3);
-
-
-
-
-	// 2nd soldier
-	//Head
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("color"));
-	pObject3->SetPosition(35.f, 25.2f, 90.f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
-	pObject3->SetScale(0.5f, 0.5f, 0.5f);
-	vecObjects.push_back(pObject3);
-
-	//Shoulder
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(35.f, 23.65f, 90.f);
-	pObject3->SetScale(0.75f, 0.3f, 0.5f);
-	vecObjects.push_back(pObject3);
-
-	//body
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(35.f, 23.7f, 90.f);
-	pObject3->SetScale(0.75f, 0.7f, 0.48f);
-	vecObjects.push_back(pObject3);
-
-	//Pelvis
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(35.f, 22.7f, 90.f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 180.f);
-	pObject3->SetScale(0.75f, 0.3f, 0.5f);
-	vecObjects.push_back(pObject3);
-
-	//Right Thigh
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(34.5f, 22.2f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	//Left Thigh
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(35.5f, 22.2f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	// Right calf
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(34.5f, 20.7f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	//Left calf
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(35.5f, 20.7f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	//Left arm
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(35.9f, 23.55f, 90.f);
-	pObject3->SetScale(0.2f, 1.8f, 0.2f);
-	vecObjects.push_back(pObject3);
-
-	//Right upper arm
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(34.1f, 23.55f, 90.f);
-	pObject3->SetScale(0.2f, 0.8f, 0.2f);
-	vecObjects.push_back(pObject3);
-
-	//Right lower arm
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(34.1f, 23.f, 90.5f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
-	pObject3->SetScale(0.2f, 1.f, 0.2f);
-	vecObjects.push_back(pObject3);
-
-	//spear body
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("Wood"));
-	pObject3->SetPosition(34.1f, 23.f, 91.f);
-	pObject3->SetScale(0.05f, 5.f, 0.05f);
-	vecObjects.push_back(pObject3);
-
-	//spear tip
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
-	pObject3->SetTexture(TextureManager::GetTexture("Metal"));
-	pObject3->SetPosition(34.1f, 25.2f, 91.f);
-	pObject3->SetScale(0.1f, 0.2f, 0.1f);
-	vecObjects.push_back(pObject3);
-
-	// 3rd soldier
-	//Head
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("color"));
-	pObject3->SetPosition(75.f, 25.2f, 90.f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
-	pObject3->SetScale(0.5f, 0.5f, 0.5f);
-	vecObjects.push_back(pObject3);
-
-	//Shoulder
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(75.f, 23.65f, 90.f);
-	pObject3->SetScale(0.75f, 0.3f, 0.5f);
-	vecObjects.push_back(pObject3);
-
-	//body
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(75.f, 23.7f, 90.f);
-	pObject3->SetScale(0.75f, 0.7f, 0.48f);
-	vecObjects.push_back(pObject3);
-
-	//Pelvis
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(75.f, 22.7f, 90.f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 180.f);
-	pObject3->SetScale(0.75f, 0.3f, 0.5f);
-	vecObjects.push_back(pObject3);
-
-	//Right Thigh
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(74.5f, 22.2f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	//Left Thigh
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(75.5f, 22.2f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	// Right calf
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(74.5f, 20.7f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	//Left calf
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(75.5f, 20.7f, 90.f);
-	pObject3->SetScale(0.35f, 1.5f, 0.35f);
-	vecObjects.push_back(pObject3);
-
-	//Left arm
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(75.9f, 23.55f, 90.f);
-	pObject3->SetScale(0.2f, 1.8f, 0.2f);
-	vecObjects.push_back(pObject3);
-
-	//Right upper arm
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(74.1f, 23.55f, 90.f);
-	pObject3->SetScale(0.2f, 0.8f, 0.2f);
-	vecObjects.push_back(pObject3);
-
-	//Right lower arm
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("armour"));
-	pObject3->SetPosition(74.1f, 23.f, 90.5f);
-	pObject3->SetRotation(1.f, 0.f, 0.f, 90.f);
-	pObject3->SetScale(0.2f, 1.f, 0.2f);
-	vecObjects.push_back(pObject3);
-
-	//spear body
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-	pObject3->SetTexture(TextureManager::GetTexture("Wood"));
-	pObject3->SetPosition(74.1f, 23.f, 91.f);
-	pObject3->SetScale(0.05f, 5.f, 0.05f);
-	vecObjects.push_back(pObject3);
-
-	//spear tip
-	pObject3 = new Object(uniformModel, uniformShininess, 1.f);
-	pObject3->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
-	pObject3->SetTexture(TextureManager::GetTexture("Metal"));
-	pObject3->SetPosition(74.1f, 25.2f, 91.f);
+	pObject3->SetPosition(X - 0.9f, 25.2f + rightHeight, Z+1.f);
 	pObject3->SetScale(0.1f, 0.2f, 0.1f);
 	vecObjects.push_back(pObject3);
 }
