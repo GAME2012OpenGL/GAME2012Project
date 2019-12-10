@@ -54,7 +54,7 @@ bool bWireFrameMode = false;
 
 Camera camera(glm::vec3(30.f, 10.f, 100.f), glm::vec3(0.f, 1.f, 0.f), 0.f, 0.f, 20.f, 0.5f);
 
-float WatchTowerHeight = 23.f;
+float WatchTowerHeight = 21.5f;
 
 float WallThickness = 4.f;
 
@@ -125,7 +125,7 @@ PointLight pLight3(glm::vec3(80.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
 
 void CreateTextures();
 void CreateObjects();
-void CreateWatchTower(float = 0.f, float = 0.f,float = 0.f, float = 0.f);
+void CreateWatchTower(float = 0.f, float = 0.f, float = 0.f);
 
 void init(void)
 {
@@ -214,8 +214,10 @@ void init(void)
 
 	/////////////////////////////////Create Objects///////////////////////////////
 	CreateObjects();
-	CreateWatchTower(0.f,0.f,0.f,0.f);
-	CreateWatchTower(0.f, 1.f, 0.f, 90.f);
+	CreateWatchTower(50.f, 90.f);
+	CreateWatchTower(90.f, 50.f, 90.f);
+	CreateWatchTower(50.f, 10.f);
+	CreateWatchTower(10.f, 50.f, 90.f);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -422,6 +424,7 @@ void CreateTextures()
 	TextureManager::CreateTexture("../Texture/Wall.jpg", "Wall", SOIL_LOAD_RGB);
 	TextureManager::CreateTexture("../Texture/Wood.jpg", "Wood", SOIL_LOAD_RGBA);
 	TextureManager::CreateTexture("../Texture/RoofTile.jpg", "Giwa", SOIL_LOAD_RGBA);
+	TextureManager::CreateTexture("../Texture/Door.jpg", "Door", SOIL_LOAD_RGBA);
 }
 
 void CreateObjects()
@@ -575,59 +578,91 @@ void CreateObjects()
 
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	pObject1->SetTexture(TextureManager::GetTexture("Door"));
 	pObject1->SetPosition(60.f, 10.f, 60.f);
 	vecObjects.push_back(pObject1);
 }
 
-void CreateWatchTower(float x, float y, float z, float angle)
+void CreateWatchTower(float lx, float lz, float angle)
 {
 	Object* pObject2 = new Object(uniformModel, uniformShininess, 1.f);
 
-	for (float j = 87.5; j <= 92.5; j += 5.f)
+	if (angle == 0)
 	{
-		for (float i = 42.5; i <= 57.5; i += 5.f)
+		float pillar_x = lx - 7.5f;
+		float pillar_z = lz - 2.5f;
+
+		for (int zcount = 0; zcount < 2; zcount++, pillar_z += 5.f)
 		{
-			//Pillar
-			pObject2 = new Object(uniformModel, uniformShininess, 1.f);
-			pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
-			pObject2->SetTexture(TextureManager::GetTexture("Wood"));
-			pObject2->SetPosition(i, WatchTowerHeight, j);
-			pObject2->SetRotation(x, y, z, angle);
-			pObject2->SetScale(0.3f, 5.5f, 0.3f);
-			vecObjects.push_back(pObject2);
+			for (int xcount = 0; xcount < 4; xcount++, pillar_x += 5.f)
+			{
+				if (pillar_x > lx + 7.5f)
+				{
+					pillar_x = lx - 7.5f;
+				}
+				//Pillar
+				pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+				pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+				pObject2->SetTexture(TextureManager::GetTexture("Wood"));
+				pObject2->SetPosition(pillar_x, WatchTowerHeight, pillar_z);
+				pObject2->SetScale(0.3f, 4.5f, 0.3f);
+				vecObjects.push_back(pObject2);
+			}
+		}
+	}
+	else
+	{
+		float pillar_x = lx - 2.5f;
+		float pillar_z = lz - 7.5f;
+
+		for (int xcount = 0; xcount < 2; xcount++, pillar_x += 5.f)
+		{
+			for (int zcount = 0; zcount < 4; zcount++, pillar_z += 5.f)
+			{
+				if (pillar_z > lz + 7.5f)
+				{
+					pillar_z = lz - 7.5f;
+				}
+				//Pillar
+				pObject2 = new Object(uniformModel, uniformShininess, 1.f);
+				pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CYLINDER));
+				pObject2->SetTexture(TextureManager::GetTexture("Wood"));
+				pObject2->SetPosition(pillar_x, WatchTowerHeight, pillar_z);
+				pObject2->SetScale(0.3f, 5.5f, 0.3f);
+				vecObjects.push_back(pObject2);
+			}
 		}
 	}
 
 	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
 	pObject2->SetTexture(TextureManager::GetTexture("Giwa"));
-	pObject2->SetPosition(50.f, WatchTowerHeight + 4.5f, 90.f);
-	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetPosition(lx, WatchTowerHeight + 3.5f, lz);
+	pObject2->SetRotation(0.f, 1.f, 0.f, angle);
 	pObject2->SetScale(10.f, 2.f, 5.f);
 	vecObjects.push_back(pObject2);
 
 	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
 	pObject2->SetTexture(TextureManager::GetTexture("Wood"));
-	pObject2->SetPosition(50.f, WatchTowerHeight + 6.3f, 90.f);
-	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetPosition(lx, WatchTowerHeight + 5.3f, lz);
+	pObject2->SetRotation(0.f, 1.f, 0.f, angle);
 	pObject2->SetScale(5.f, 1.3f, 2.5f);
 	vecObjects.push_back(pObject2);
 
 	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMIDKINDOF));
 	pObject2->SetTexture(TextureManager::GetTexture("Giwa"));
-	pObject2->SetPosition(50.f, WatchTowerHeight+8.5f, 90.f);
-	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetPosition(lx, WatchTowerHeight + 7.5f, lz);
+	pObject2->SetRotation(0.f, 1.f, 0.f, angle);
 	pObject2->SetScale(8.f, 1.3f, 4.5f);
 	vecObjects.push_back(pObject2);
 
 	pObject2 = new Object(uniformModel, uniformShininess, 1.f);
 	pObject2->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_UPPERROOF));
 	pObject2->SetTexture(TextureManager::GetTexture("Giwa"));
-	pObject2->SetPosition(50.f, WatchTowerHeight + 9.f, 90.f);
-	pObject2->SetRotation(x, y, z, angle);
+	pObject2->SetPosition(lx, WatchTowerHeight + 8.f, lz);
+	pObject2->SetRotation(0.f, 1.f, 0.f, angle);
 	pObject2->SetScale(2.02f, 2.f, 1.1f);
 	vecObjects.push_back(pObject2);
 }
