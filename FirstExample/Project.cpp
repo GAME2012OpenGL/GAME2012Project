@@ -226,7 +226,16 @@ void init(void)
 	CreateWatchTower(90.f, 50.f, 90.f);
 	CreateWatchTower(50.f, 10.f);
 	CreateWatchTower(10.f, 50.f, 90.f);
-	CreateSoldier(30.f, 20.f, 90.f);
+
+	//Front wall
+	CreateSoldier(30.f, 19.f, 90.f);
+	CreateSoldier(50.f, 19.f, 90.f);
+	CreateSoldier(70.f, 19.f, 90.f);
+
+	//Front door
+	CreateSoldier(40.f, -2.f, 100.f);
+	CreateSoldier(60.f, -2.f, 100.f);
+
 	CreateStair();
 
 	//Objects using blend(should be always last)
