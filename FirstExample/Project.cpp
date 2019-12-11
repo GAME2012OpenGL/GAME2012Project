@@ -119,13 +119,13 @@ DirLight dirLight(glm::vec3(1.f, -1.f, -1.f),
 				  0.2f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
 //50 range
-PointLight pLight(glm::vec3(20.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+PointLight pLight(glm::vec3(20.f, 7.f, 105.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(1.f, 0.f, 0.f), 1.f, 1.f);
 
-PointLight pLight2(glm::vec3(50.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+PointLight pLight2(glm::vec3(50.f, 7.f, 105.f), 1.f, 0.09, 0.032f,
 				  0.2f, glm::vec3(0.f, 1.f, 0.f), 1.f, 1.f);
 
-PointLight pLight3(glm::vec3(80.f, 7.f, 95.f), 1.f, 0.09, 0.032f,
+PointLight pLight3(glm::vec3(80.f, 7.f, 105.f), 1.f, 0.09, 0.032f,
 	0.2f, glm::vec3(0.f, 0.f, 1.f), 1.f, 1.f);
 
 void CreateTextures();
@@ -531,15 +531,30 @@ void CreateObjects()
 	pObject1->SetScale(5.f, 10.f, 5.f);
 	vecObjects.push_back(pObject1);
 
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(10.f, 2.f, 10.f);
+	
+	
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
+	pObject1->SetTexture(TextureManager::GetTexture("Door"));
+	pObject1->SetPosition(40.f, 0.f, 94.f);
+	pObject1->SetScale(5.f, 4.f, 3.f);
 	vecObjects.push_back(pObject1);
+
+	pObject1 = new Object(uniformModel, uniformShininess, 1.f);
+	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
+	pObject1->SetTexture(TextureManager::GetTexture("Door"));
+	pObject1->SetPosition(60.f, 0.f, 97.f);
+	pObject1->SetScale(5.f, 4.f, 3.f);
+	pObject1->SetRotation(0.f, 1.f, 0.f, 180.f);
+	vecObjects.push_back(pObject1);
+
+	//pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	//pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_CUBE));
+	//pObject1->SetTexture(TextureManager::GetTexture("Leather"));
+	//pObject1->SetPosition(10.f, 2.f, 10.f);
+	//vecObjects.push_back(pObject1);
 	
-	
-	
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
+	/*pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_PYRAMID));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
 	pObject1->SetPosition(15.f, 2.f, 15.f);
@@ -579,7 +594,7 @@ void CreateObjects()
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
 	pObject1->SetTexture(TextureManager::GetTexture("Door"));
 	pObject1->SetPosition(60.f, 10.f, 60.f);
-	vecObjects.push_back(pObject1);
+	vecObjects.push_back(pObject1);*/
 }
 
 void CreateWatchTower(float lx, float lz, float angle)
