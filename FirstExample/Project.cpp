@@ -579,7 +579,7 @@ void CreateObjects()
 	pObject1->SetScale(3.f, 3.f, 3.f);
 	vecObjects.push_back(pObject1);
 
-
+	//Sandwich
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_SANDWICH));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
@@ -587,7 +587,7 @@ void CreateObjects()
 	pObject1->SetScale(3.f, 3.f, 3.f);
 	vecObjects.push_back(pObject1);
 
-	
+	//Rhombus
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_RHOMBUS));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
@@ -595,24 +595,12 @@ void CreateObjects()
 	pObject1->SetScale(3.f, 3.f, 3.f);
 	vecObjects.push_back(pObject1);
 
-	/*
+	//Octahedron
 	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
 	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_OCTAHEDRON));
 	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(30.f, 10.f, 30.f);
+	pObject1->SetPosition(70.f, 10.f, 26.f);
 	vecObjects.push_back(pObject1);
-
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_UPPERROOF));
-	pObject1->SetTexture(TextureManager::GetTexture("Leather"));
-	pObject1->SetPosition(45.f, 10.f, 45.f);
-	vecObjects.push_back(pObject1);
-
-	pObject1 = new Object(uniformModel, uniformShininess, 8.f);
-	pObject1->SetMesh(GeometryGenerator::GetMesh(GeometryGenerator::EMeshList::MESH_TRAPEZOID));
-	pObject1->SetTexture(TextureManager::GetTexture("Door"));
-	pObject1->SetPosition(60.f, 10.f, 60.f);
-	vecObjects.push_back(pObject1);*/
 }
 
 void CreateWatchTower(float lx, float lz, float angle)
