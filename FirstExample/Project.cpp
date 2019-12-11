@@ -397,7 +397,7 @@ int main(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	glutInitWindowSize(WindowWidth, WindowHeight);
-	glutCreateWindow("Jang, Doosung, 101175013");
+	glutCreateWindow("Team Noctis, Doosung Jang, Junho Kim, Junhyuk Kang");
 
 	glewInit();	//Initializes the glew and prepares the drawing pipeline.
 	init();
